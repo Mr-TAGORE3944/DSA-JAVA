@@ -69,7 +69,7 @@ public class maxKnights {
 
                 if(col != n-1) knights(board, row, col+1, num);
                 else knights(board, row+1, 0, num);
-            
+           }
         }
 
 
