@@ -92,12 +92,34 @@ public class TrieImplementation {
 
 
     public static void helper(){
-        String s = "ababa";
-        for(int i = 0 ; i < s.length() ; i++){
-            insert(s.substring(i));
-        }
-        System.out.println(countNodes(root));
+        // String s = "ababa";
+        // for(int i = 0 ; i < s.length() ; i++){
+        //     insert(s.substring(i));
+        // }
+        // System.out.println(countNodes(root));
 
+        String words[] = {"a", "banana" , "app" , "appl" , "ap" ,"apply" , "apple"};
+        for(int i = 0 ; i < words.length ; i++){
+            insert(words[i]);
+        }
+
+        longestWord(root, new StringBuilder(""));
+        System.out.println(ans);
+    }
+
+    public static String ans = "";
+    public static void longestWord(Node root , StringBuilder temp){
+        if(root == null) return;
+        for(int i = 0 ; i < 26 ; i++){
+            if(root.children[i] != null && root.children[i].eow == true){
+                temp.append((char) (i + 'a'));
+                if(temp.length() > ans.length()){
+                    ans = temp.toString();
+                }
+                longestWord(root.children[i], temp);
+                temp.deleteCharAt(temp.length()-1);
+            }
+        }
 
     }
 
