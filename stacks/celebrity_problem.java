@@ -35,6 +35,7 @@ public class celebrity_problem {
 }
 
 public static void main(String[] args) {
-    celebrity(null, 0);
+    int n = celebrity(null, 0);
+    System.out.println(n);
 }
 }

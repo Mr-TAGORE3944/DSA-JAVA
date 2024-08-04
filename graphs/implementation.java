@@ -144,6 +144,7 @@ public class implementation {
 
     public static boolean cycleDetectionUndirectedGraph(ArrayList<Edge> graph[] , boolean[] isVisit , int curr  , int parent){
         isVisit[curr] = true;
+        
         for(int i = 0 ; i < graph[curr].size() ; i++){
             Edge e = graph[curr].get(i);
             if(isVisit[e.des] == true && parent != e.des){
