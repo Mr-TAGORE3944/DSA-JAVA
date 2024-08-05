@@ -1,0 +1,59 @@
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    public TreeNode(int item) {
+        val = item;
+        left = right = null;
+    }
+}
+
+public class BinaryTreeToString {
+
+    // Function to convert binary tree to string with bracket representation
+    public String treeToString(TreeNode root) {
+        if (root == null) {
+            return "";
+        }
+        StringBuilder sb = new StringBuilder();
+        buildString(root, sb);
+        return sb.toString();
+    }
+
+    // Helper function to build the string recursively
+    private void buildString(TreeNode node, StringBuilder sb) {
+        if (node == null) {
+            return;
+        }
+        sb.append(node.val);
+
+        if (node.left != null || node.right != null) {
+            sb.append("(");
+            buildString(node.left, sb);
+            sb.append(")");
+
+            if (node.right != null) {
+                sb.append("(");
+                buildString(node.right, sb);
+                sb.append(")");
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        // Example to test the treeToString function
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+        root.right.left = new TreeNode(6);
+        root.right.right = new TreeNode(7);
+
+        BinaryTreeToString btts = new BinaryTreeToString();
+        String result = btts.treeToString(root);
+        System.out.println("String representation of the binary tree: " + result);
+        // Output should be "1(2(4)(5))(3(6)(7))"
+    }
+}

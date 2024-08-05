@@ -1,0 +1,214 @@
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    public TreeNode(int item) {
+        val = item;
+        left = right = null;
+    }
+}
+
+public class BinaryTreeFromString {
+
+    // Function to construct binary tree from string with bracket representation
+    public TreeNode str2tree(String s) {
+        if (s == null || s.isEmpty()) {
+            return null;
+        }
+        return constructTree(s, 0, s.length() - 1);
+    }
+
+    // Helper function to construct tree recursively
+    private TreeNode constructTree(String s, int start, int end) {
+        if (start > end) {
+            return null;
+        }
+
+        // Find the root value
+        int i = start;
+        while (i <= end && (s.charAt(i) == '-' || Character.isDigit(s.charAt(i)))) {
+            i++;
+        }
+        TreeNode root = new TreeNode(Integer.parseInt(s.substring(start, i)));
+
+        // Find the start and end of the left and right subtrees
+        if (i <= end && s.charAt(i) == '(') {
+            int leftStart = i;
+            int leftEnd = findClosingBracket(s, leftStart);
+            root.left = constructTree(s, leftStart + 1, leftEnd - 1);
+
+            if (leftEnd + 1 <= end && s.charAt(leftEnd + 1) == '(') {
+                int rightStart = leftEnd + 1;
+                int rightEnd = findClosingBracket(s, rightStart);
+                root.right = constructTree(s, rightStart + 1, rightEnd - 1);
+            }
+        }
+
+        return root;
+    }
+
+    // Helper function to find the index of the corresponding closing bracket
+    private int findClosingBracket(String s, int start) {
+        int count = 0;
+        for (int i = start; i < s.length(); i++) {
+            if (s.charAt(i) == '(') {
+                count++;
+            } else if (s.charAt(i) == ')') {
+                count--;
+            }
+            if (count == 0) {
+                return i;
+            }
+        }
+        return -1; // Should never reach here if the input is valid
+    }
+
+    // Function to print the tree in inorder for testing purposes
+    public void inorderTraversal(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        inorderTraversal(root.left);
+        System.out.print(root.val + " ");
+        inorderTraversal(root.right);
+    }
+
+    public static void main(String[] args) {
+        // Example to test the str2tree function
+        BinaryTreeFromString btfs = new BinaryTreeFromString();
+        String s = "1(2(4)(5))(3(6)(7))";
+        TreeNode root = btfs.str2tree(s);
+        System.out.print("Inorder traversal of the constructed tree: ");
+        btfs.inorderTraversal(root); // Output should be: 4 2 5 1 6 3 7
+    }
+}
+
+
+
+/////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+
+
+/* Java program to construct a binary tree from
+the given String */
+import java.util.*;
+class GFG
+{
+
+/* A binary tree node has data, pointer to left
+child and a pointer to right child */
+static class Node
+{
+	int data;
+	Node left, right;
+};
+
+/* Helper function that allocates a new node */
+static Node newNode(int data)
+{
+	Node node = new Node();
+	node.data = data;
+	node.left = node.right = null;
+	return (node);
+}
+
+/* This function is here just to test */
+static void preOrder(Node node)
+{
+	if (node == null)
+	return;
+	System.out.printf("%d ", node.data);
+	preOrder(node.left);
+	preOrder(node.right);
+}
+
+// function to return the index of close parenthesis
+static int findIndex(String str, int si, int ei)
+{
+	if (si > ei)
+	return -1;
+
+	// Inbuilt stack
+	Stack<Character> s = new Stack<>();
+	for (int i = si; i <= ei; i++)
+	{
+
+	// if open parenthesis, push it
+	if (str.charAt(i) == '(')
+		s.add(str.charAt(i));
+
+	// if close parenthesis
+	else if (str.charAt(i) == ')')
+	{
+		if (s.peek() == '(')
+		{
+		s.pop();
+
+		// if stack is empty, this is
+		// the required index
+		if (s.isEmpty())
+			return i;
+		}
+	}
+	}
+
+	// if not found return -1
+	return -1;
+}
+
+// function to construct tree from String
+static Node treeFromString(String str, int si, int ei)
+{
+
+	// Base case
+	if (si > ei)
+	return null;
+
+	int num = 0;
+	// In case the number is having more than 1 digit
+	while(si <= ei && str.charAt(si) >= '0' && str.charAt(si) <= '9')
+	{
+	num *= 10;
+	num += (str.charAt(si) - '0');
+	si++;
+	}
+	si--;
+	// new root
+	Node root = newNode(num);
+	int index = -1;
+
+	// if next char is '(' find the index of
+	// its complement ')'
+	if (si + 1 <= ei && str.charAt(si+1) == '(')
+	index = findIndex(str, si + 1, ei);
+
+	// if index found
+	if (index != -1)
+	{
+
+	// call for left subtree
+	root.left = treeFromString(str, si + 2, index - 1);
+
+	// call for right subtree
+	root.right
+		= treeFromString(str, index + 2, ei - 1);
+	}
+	return root;
+}
+
+// Driver Code
+public static void main(String[] args)
+{
+	String str = "4(2(3)(1))(6(5))";
+	Node root = treeFromString(str, 0, str.length() - 1);
+	preOrder(root);
+}
+}
+
+// This code is contributed by gauravrajput1 
+

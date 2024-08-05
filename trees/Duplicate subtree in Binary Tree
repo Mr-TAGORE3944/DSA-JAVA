@@ -1,0 +1,62 @@
+import java.util.*;
+
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    public TreeNode(int item) {
+        val = item;
+        left = right = null;
+    }
+}
+
+public class DuplicateSubtrees {
+
+    // Function to find all duplicate subtrees in the binary tree
+    public List<TreeNode> findDuplicateSubtrees(TreeNode root) {
+        List<TreeNode> result = new ArrayList<>();
+        Map<String, Integer> subtreeMap = new HashMap<>();
+        serializeSubtree(root, subtreeMap, result);
+        return result;
+    }
+
+    // Helper function to serialize the subtree
+    private String serializeSubtree(TreeNode node, Map<String, Integer> subtreeMap, List<TreeNode> result) {
+        if (node == null) {
+            return "#";
+        }
+
+        // Serialize the current subtree
+        String serialized = node.val + "," + serializeSubtree(node.left, subtreeMap, result) + "," + serializeSubtree(node.right, subtreeMap, result);
+
+        // Count the occurrence of the serialized subtree
+        subtreeMap.put(serialized, subtreeMap.getOrDefault(serialized, 0) + 1);
+
+        // If the subtree has appeared exactly twice, add it to the result list
+        if (subtreeMap.get(serialized) == 2) {
+            result.add(node);
+        }
+
+        return serialized;
+    }
+
+    public static void main(String[] args) {
+        // Example to test the findDuplicateSubtrees function
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.right.left = new TreeNode(2);
+        root.right.right = new TreeNode(4);
+        root.right.left.left = new TreeNode(4);
+
+        DuplicateSubtrees ds = new DuplicateSubtrees();
+        List<TreeNode> duplicates = ds.findDuplicateSubtrees(root);
+
+        System.out.println("Duplicate subtrees found:");
+        for (TreeNode node : duplicates) {
+            System.out.println("Subtree rooted at node with value: " + node.val);
+        }
+    }
+}

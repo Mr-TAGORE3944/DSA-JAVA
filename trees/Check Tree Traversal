@@ -1,0 +1,86 @@
+import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    TreeNode(int item) {
+        val = item;
+        left = right = null;
+    }
+}
+
+public class TreeTraversalChecker {
+
+    private int preIndex = 0;
+    private int postIndex = 0;
+
+    // Function to construct the tree from preorder and inorder traversals
+    private TreeNode buildTreeFromPreAndIn(int[] preorder, int[] inorder, int inStart, int inEnd, Map<Integer, Integer> inMap) {
+        if (inStart > inEnd) {
+            return null;
+        }
+
+        TreeNode node = new TreeNode(preorder[preIndex++]);
+
+        if (inStart == inEnd) {
+            return node;
+        }
+
+        int inIndex = inMap.get(node.val);
+
+        node.left = buildTreeFromPreAndIn(preorder, inorder, inStart, inIndex - 1, inMap);
+        node.right = buildTreeFromPreAndIn(preorder, inorder, inIndex + 1, inEnd, inMap);
+
+        return node;
+    }
+
+    // Function to check if the postorder traversal matches the constructed tree
+    private boolean checkPostorder(TreeNode node, int[] postorder) {
+        if (node == null) {
+            return true;
+        }
+
+        boolean left = checkPostorder(node.left, postorder);
+        boolean right = checkPostorder(node.right, postorder);
+
+        if (node.val != postorder[postIndex++]) {
+            return false;
+        }
+
+        return left && right;
+    }
+
+    // Main function to check if the traversals are from the same tree
+    public boolean checkTreeTraversal(int[] preorder, int[] inorder, int[] postorder) {
+        if (preorder.length != inorder.length || inorder.length != postorder.length) {
+            return false;
+        }
+
+        int n = preorder.length;
+        Map<Integer, Integer> inMap = new HashMap<>();
+
+        for (int i = 0; i < n; i++) {
+            inMap.put(inorder[i], i);
+        }
+
+        TreeNode root = buildTreeFromPreAndIn(preorder, inorder, 0, n - 1, inMap);
+
+        postIndex = 0;
+        return checkPostorder(root, postorder);
+    }
+
+    public static void main(String[] args) {
+        TreeTraversalChecker checker = new TreeTraversalChecker();
+
+        int[] preorder = {1, 2, 4, 5, 3, 6};
+        int[] inorder = {4, 2, 5, 1, 6, 3};
+        int[] postorder = {4, 5, 2, 6, 3, 1};
+
+        if (checker.checkTreeTraversal(preorder, inorder, postorder)) {
+            System.out.println("The traversals are from the same tree.");
+        } else {
+            System.out.println("The traversals are not from the same tree.");
+        }
+    }
+}

@@ -1,0 +1,106 @@
+import java.util.*;
+
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    public TreeNode(int item) {
+        val = item;
+        left = right = null;
+    }
+}
+
+public class BinaryTreeBoundaryTraversal {
+
+    // Function to return the boundary traversal of the binary tree
+    public ArrayList<Integer> boundaryTraversal(TreeNode root) {
+        ArrayList<Integer> result = new ArrayList<>();
+        if (root == null) {
+            return result;
+        }
+
+        // Add the root value
+        result.add(root.val);
+
+        // Get the left boundary excluding the leaf nodes
+        addLeftBoundary(root.left, result);
+
+        // Get all leaf nodes
+        addLeaves(root.left, result);
+        addLeaves(root.right, result);
+
+        // Get the right boundary excluding the leaf nodes and add it in reverse order
+        addRightBoundary(root.right, result);
+
+        return result;
+    }
+
+    // Helper function to add left boundary nodes excluding the leaf nodes
+    private void addLeftBoundary(TreeNode node, ArrayList<Integer> result) {
+        while (node != null) {
+            if (!isLeaf(node)) {
+                result.add(node.val);
+            }
+            if (node.left != null) {
+                node = node.left;
+            } else {
+                node = node.right;
+            }
+        }
+    }
+
+    // Helper function to add leaf nodes
+    private void addLeaves(TreeNode node, ArrayList<Integer> result) {
+        if (node == null) {
+            return;
+        }
+        if (isLeaf(node)) {
+            result.add(node.val);
+        } else {
+            addLeaves(node.left, result);
+            addLeaves(node.right, result);
+        }
+    }
+
+    // Helper function to add right boundary nodes excluding the leaf nodes
+    private void addRightBoundary(TreeNode node, ArrayList<Integer> result) {
+        Stack<Integer> stack = new Stack<>();
+        while (node != null) {
+            if (!isLeaf(node)) {
+                stack.push(node.val);
+            }
+            if (node.right != null) {
+                node = node.right;
+            } else {
+                node = node.left;
+            }
+        }
+        // Add right boundary nodes in reverse order
+        while (!stack.isEmpty()) {
+            result.add(stack.pop());
+        }
+    }
+
+    // Helper function to check if a node is a leaf node
+    private boolean isLeaf(TreeNode node) {
+        return (node.left == null && node.right == null);
+    }
+
+    public static void main(String[] args) {
+        // Example to test the boundaryTraversal function
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+        root.right.left = new TreeNode(6);
+        root.right.right = new TreeNode(7);
+        root.left.right.left = new TreeNode(8);
+        root.left.right.right = new TreeNode(9);
+
+        BinaryTreeBoundaryTraversal bbt = new BinaryTreeBoundaryTraversal();
+        ArrayList<Integer> boundary = bbt.boundaryTraversal(root);
+        System.out.println("Boundary traversal of the binary tree: " + boundary); // Output should be [1, 2, 4, 8, 9, 6, 7, 3]
+    }
+}

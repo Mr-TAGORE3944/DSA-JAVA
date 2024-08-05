@@ -1,0 +1,188 @@
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+public class BinaryTree {
+    
+    // Helper function to find the k-th ancestor
+    public TreeNode findKthAncestor(TreeNode root, int node, int k, TreeNode[] ancestor) {
+        // Base case: If root is null, return null
+        if (root == null) {
+            return null;
+        }
+
+        // If the node is found, set the ancestor[0] to root and return root
+        if (root.val == node) {
+            ancestor[0] = root;
+            return root;
+        }
+
+        // Recur for left subtree
+        TreeNode left = findKthAncestor(root.left, node, k, ancestor);
+        // If the node is found in left subtree
+        if (left != null) {
+            if (ancestor[1] != null) {
+                return ancestor[1]; // Return the k-th ancestor if already found
+            }
+            if (ancestor[0] == root.left || ancestor[0] == root.right) {
+                ancestor[1] = root; // Set ancestor[1] if k-th ancestor is root
+                if (k == 1) {
+                    return root;
+                } else {
+                    ancestor[0] = root;
+                    return root;
+                }
+            }
+            k--; // Decrement k
+            if (k == 0) {
+                ancestor[1] = root; // Set ancestor[1] if k-th ancestor is root
+                return root;
+            }
+            return root;
+        }
+
+        // Recur for right subtree
+        TreeNode right = findKthAncestor(root.right, node, k, ancestor);
+        // If the node is found in right subtree
+        if (right != null) {
+            if (ancestor[1] != null) {
+                return ancestor[1]; // Return the k-th ancestor if already found
+            }
+            if (ancestor[0] == root.left || ancestor[0] == root.right) {
+                ancestor[1] = root; // Set ancestor[1] if k-th ancestor is root
+                if (k == 1) {
+                    return root;
+                } else {
+                    ancestor[0] = root;
+                    return root;
+                }
+            }
+            k--; // Decrement k
+            if (k == 0) {
+                ancestor[1] = root; // Set ancestor[1] if k-th ancestor is root
+                return root;
+            }
+            return root;
+        }
+
+        return null; // Return null if node not found in either subtree
+    }
+
+    public TreeNode getKthAncestor(TreeNode root, int node, int k) {
+        TreeNode[] ancestor = new TreeNode[2]; // Array to store the node and its k-th ancestor
+        ancestor[0] = null;
+        ancestor[1] = null;
+        findKthAncestor(root, node, k, ancestor);
+        return ancestor[1]; // Return the k-th ancestor
+    }
+
+    public static void main(String[] args) {
+        BinaryTree tree = new BinaryTree();
+
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(2);
+        root.right = new TreeNode(3);
+        root.left.left = new TreeNode(4);
+        root.left.right = new TreeNode(5);
+        root.right.left = new TreeNode(6);
+        root.right.right = new TreeNode(7);
+
+        int node = 5;
+        int k = 2;
+
+        TreeNode ancestor = tree.getKthAncestor(root, node, k);
+        if (ancestor != null) {
+            System.out.println("The " + k + "-th ancestor of node " + node + " is " + ancestor.val);
+        } else {
+            System.out.println("The " + k + "-th ancestor of node " + node + " does not exist.");
+        }
+    }
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+// Java program to calculate Kth ancestor of given node 
+public class Solution
+{
+
+// A Binary Tree Node
+static class Node
+{
+    int data;
+    Node left, right;
+};
+
+// temporary node to keep track of Node returned
+// from previous recursive call during backtrack
+static Node temp = null;
+static int k;
+
+// recursive function to calculate Kth ancestor
+static Node kthAncestorDFS(Node root, int node )
+{ 
+    // Base case
+    if (root == null)
+        return null;
+    
+    if (root.data == node||
+    (temp = kthAncestorDFS(root.left,node)) != null ||
+    (temp = kthAncestorDFS(root.right,node)) != null)
+    { 
+        if (k > 0)     
+            k--;
+        
+        else if (k == 0)
+        {
+            // print the kth ancestor
+            System.out.print("Kth ancestor is: "+root.data);
+            
+            // return null to stop further backtracking
+            return null;
+        }
+        
+        // return current node to previous call
+        return root;
+    }
+    return null;
+} 
+
+// Utility function to create a new tree node
+static Node newNode(int data)
+{
+    Node temp = new Node();
+    temp.data = data;
+    temp.left = temp.right = null;
+    return temp;
+}
+
+// Driver code
+public static void main(String args[])
+{
+    // Let us create binary tree shown in above diagram
+    Node root = newNode(1);
+    root.left = newNode(2);
+    root.right = newNode(3);
+    root.left.left = newNode(4);
+    root.left.right = newNode(5);
+
+    k = 2;
+    int node = 5;
+
+    // print kth ancestor of given node
+    Node parent = kthAncestorDFS(root,node);
+    
+    // check if parent is not null, it means
+    // there is no Kth ancestor of the node
+    if (parent != null)
+        System.out.println("-1");
+}
+}
+
+// This code is contributed by Arnab Kundu

@@ -1,0 +1,146 @@
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+public class BinaryTree {
+
+    // Function to find the lowest common ancestor (LCA)
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+
+        if (left != null && right != null) {
+            return root;
+        }
+
+        return left != null ? left : right;
+    }
+
+    // Function to find the distance from the root to a given node
+    public int findHeight(TreeNode root, TreeNode target, int height) {
+        if (root == null) {
+            return -1;
+        }
+        if (root == target) {
+            return height;
+        }
+
+        int left = findHeight(root.left, target, height + 1);
+        if (left != -1) {
+            return left;
+        }
+
+        return findHeight(root.right, target, height + 1);
+    }
+
+    // Function to find the minimum distance between two given nodes
+    public int minDistance(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode lca = lowestCommonAncestor(root, p, q);
+        int distLCA = findHeight(root, lca, 0);
+        int distP = findHeight(root, p, 0);
+        int distQ = findHeight(root, q, 0);
+        return (distP - distLCA) + (distQ - distLCA);
+    }
+
+    public static void main(String[] args) {
+        BinaryTree tree = new BinaryTree();
+
+        TreeNode root = new TreeNode(3);
+        root.left = new TreeNode(5);
+        root.right = new TreeNode(1);
+        root.left.left = new TreeNode(6);
+        root.left.right = new TreeNode(2);
+        root.right.left = new TreeNode(0);
+        root.right.right = new TreeNode(8);
+        root.left.right.left = new TreeNode(7);
+        root.left.right.right = new TreeNode(4);
+
+        TreeNode p = root.left; // 5
+        TreeNode q = root.left.right.right; // 4
+
+        int distance = tree.minDistance(root, p, q);
+        System.out.println("Minimum distance between " + p.val + " and " + q.val + " is " + distance);
+    }
+}
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+public class BinaryTree {
+    
+    // Function to find the lowest common ancestor (LCA)
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        if (root == null || root == p || root == q) {
+            return root;
+        }
+        
+        TreeNode left = lowestCommonAncestor(root.left, p, q);
+        TreeNode right = lowestCommonAncestor(root.right, p, q);
+        
+        if (left != null && right != null) {
+            return root;
+        }
+        
+        return left != null ? left : right;
+    }
+    
+    // Function to find the distance from root to a given node
+    public int findDistance(TreeNode root, TreeNode target, int distance) {
+        if (root == null) {
+            return -1;
+        }
+        if (root == target) {
+            return distance;
+        }
+        
+        int left = findDistance(root.left, target, distance + 1);
+        if (left != -1) {
+            return left;
+        }
+        
+        return findDistance(root.right, target, distance + 1);
+    }
+    
+    // Function to find the minimum distance between two given nodes
+    public int minDistance(TreeNode root, TreeNode p, TreeNode q) {
+        TreeNode lca = lowestCommonAncestor(root, p, q);
+        int distP = findDistance(lca, p, 0);
+        int distQ = findDistance(lca, q, 0);
+        return distP + distQ;
+    }
+    
+    public static void main(String[] args) {
+        BinaryTree tree = new BinaryTree();
+        
+        TreeNode root = new TreeNode(3);
+        root.left = new TreeNode(5);
+        root.right = new TreeNode(1);
+        root.left.left = new TreeNode(6);
+        root.left.right = new TreeNode(2);
+        root.right.left = new TreeNode(0);
+        root.right.right = new TreeNode(8);
+        root.left.right.left = new TreeNode(7);
+        root.left.right.right = new TreeNode(4);
+        
+        TreeNode p = root.left; // 5
+        TreeNode q = root.left.right.right; // 4
+        
+        int distance = tree.minDistance(root, p, q);
+        System.out.println("Minimum distance between " + p.val + " and " + q.val + " is " + distance);
+    }
+}

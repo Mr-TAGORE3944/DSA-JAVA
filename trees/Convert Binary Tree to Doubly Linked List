@@ -1,0 +1,80 @@
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+class DLLNode {
+    int val;
+    DLLNode prev, next;
+    DLLNode(int x) {
+        val = x;
+        prev = next = null;
+    }
+}
+
+public class BinaryTreeToDLL {
+    // Head of the Doubly Linked List
+    private DLLNode head = null;
+    // Previously visited node in in-order traversal
+    private DLLNode prev = null;
+
+    // Helper function to convert binary tree to doubly linked list
+    private void convertToDLL(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        // Recur for left subtree
+        convertToDLL(root.left);
+
+        // Process current node
+        DLLNode current = new DLLNode(root.val);
+
+        // If prev is null, it means this is the first node (leftmost node)
+        if (prev == null) {
+            head = current;
+        } else {
+            prev.next = current;
+            current.prev = prev;
+        }
+        prev = current;
+
+        // Recur for right subtree
+        convertToDLL(root.right);
+    }
+
+    // Function to convert binary tree to doubly linked list and return the head of the DLL
+    public DLLNode binaryTreeToDLL(TreeNode root) {
+        convertToDLL(root);
+        return head;
+    }
+
+    // Helper function to print the doubly linked list
+    public void printDLL(DLLNode head) {
+        DLLNode current = head;
+        while (current != null) {
+            System.out.print(current.val + " ");
+            current = current.next;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        BinaryTreeToDLL tree = new BinaryTreeToDLL();
+
+        TreeNode root = new TreeNode(10);
+        root.left = new TreeNode(12);
+        root.right = new TreeNode(15);
+        root.left.left = new TreeNode(25);
+        root.left.right = new TreeNode(30);
+        root.right.left = new TreeNode(36);
+
+        DLLNode head = tree.binaryTreeToDLL(root);
+        System.out.println("Doubly Linked List:");
+        tree.printDLL(head);
+    }
+}

@@ -1,0 +1,105 @@
+// To print all paths in a binary tree that sum up to a given value \( k \), you can use a depth-first search (DFS) approach. During the DFS, you keep track of the current path and its sum. When the sum of any sub-path equals \( k \), print that sub-path.
+
+// Here is a Java implementation for this problem:
+
+// ### Steps:
+// 1. **DFS Traversal**: Perform a DFS traversal of the tree.
+// 2. **Track Path**: Keep track of the current path from the root to the current node.
+// 3. **Check Sums**: Check if any sub-path sums to \( k \). If so, print that sub-path.
+
+// ### Java Code:
+
+// ```java
+import java.util.*;
+
+class TreeNode {
+    int val;
+    TreeNode left, right;
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+public class BinaryTree {
+
+    // Helper function to print all k-sum paths
+    private void findKSumPaths(TreeNode root, int k, List<Integer> path) {
+        if (root == null) {
+            return;
+        }
+
+        // Add the current node's value to the path
+        path.add(root.val);
+
+        // Check for k-sum paths in the current path
+        int sum = 0;
+        for (int i = path.size() - 1; i >= 0; i--) {
+            sum += path.get(i);
+            if (sum == k) {
+                printPath(path, i);
+            }
+        }
+
+        // Recur for left and right subtrees
+        findKSumPaths(root.left, k, path);
+        findKSumPaths(root.right, k, path);
+
+        // Remove the current node from the path before returning
+        path.remove(path.size() - 1);
+    }
+
+    // Helper function to print a path from start index to end
+    private void printPath(List<Integer> path, int start) {
+        for (int i = start; i < path.size(); i++) {
+            System.out.print(path.get(i) + " ");
+        }
+        System.out.println();
+    }
+
+    // Function to find all k-sum paths in the binary tree
+    public void printKSumPaths(TreeNode root, int k) {
+        List<Integer> path = new ArrayList<>();
+        findKSumPaths(root, k, path);
+    }
+
+    public static void main(String[] args) {
+        BinaryTree tree = new BinaryTree();
+
+        TreeNode root = new TreeNode(1);
+        root.left = new TreeNode(3);
+        root.right = new TreeNode(-1);
+        root.left.left = new TreeNode(2);
+        root.left.right = new TreeNode(1);
+        root.left.right.left = new TreeNode(1);
+        root.right.left = new TreeNode(4);
+        root.right.left.left = new TreeNode(1);
+        root.right.left.right = new TreeNode(2);
+        root.right.right = new TreeNode(5);
+        root.right.right.right = new TreeNode(6);
+
+        int k = 5;
+        System.out.println("Paths with sum " + k + ":");
+        tree.printKSumPaths(root, k);
+    }
+}
+// ```
+
+// ### Explanation:
+
+// 1. **TreeNode Class**: Represents a node in the binary tree.
+// 2. **findKSumPaths Method**:
+//     - Recursively performs a DFS traversal of the tree.
+//     - Adds the current node’s value to the path.
+//     - Checks all sub-paths ending at the current node to see if they sum to \( k \).
+//     - Recursively traverses the left and right subtrees.
+//     - Removes the current node from the path before returning to the caller.
+// 3. **printPath Method**:
+//     - Prints the elements of a path from a given start index to the end.
+// 4. **printKSumPaths Method**:
+//     - Initializes an empty list to store the current path and calls the helper function.
+// 5. **Main Method**:
+//     - Constructs a sample tree.
+//     - Prints all paths that sum to \( k \).
+
+// You can run this code to find and print all paths in a binary tree that sum up to a given value \( k \). Adjust the tree structure and node values as needed for different test cases.

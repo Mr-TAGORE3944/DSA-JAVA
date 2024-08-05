@@ -1,0 +1,90 @@
+import java.util.*;
+
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    public TreeNode(int item) {
+        val = item;
+        left = right = null;
+    }
+}
+
+public class BinaryTreeToBST {
+
+    // Function to perform in-order traversal of the binary tree and fill the array with node values
+    private void inorderTraversal(TreeNode root, ArrayList<Integer> nodes) {
+        if (root == null) {
+            return;
+        }
+        inorderTraversal(root.left, nodes);
+        nodes.add(root.val);
+        inorderTraversal(root.right, nodes);
+    }
+
+    // Function to find the minimum number of swaps required to sort the array
+    private int minSwapsToSort(ArrayList<Integer> nodes) {
+        int n = nodes.size();
+        int[] arr = new int[n];
+        for (int i = 0; i < n; i++) {
+            arr[i] = nodes.get(i);
+        }
+
+        // Create a sorted copy of the array
+        int[] sortedArr = arr.clone();
+        Arrays.sort(sortedArr);
+
+        // Create a map to track the positions of the elements in the sorted array
+        HashMap<Integer, Integer> positionMap = new HashMap<>();
+        for (int i = 0; i < n; i++) {
+            positionMap.put(sortedArr[i], i);
+        }
+
+        boolean[] visited = new boolean[n];
+        int swaps = 0;
+
+        for (int i = 0; i < n; i++) {
+            if (visited[i] || arr[i] == sortedArr[i]) {
+                continue;
+            }
+
+            int cycleSize = 0;
+            int j = i;
+
+            while (!visited[j]) {
+                visited[j] = true;
+                j = positionMap.get(arr[j]);
+                cycleSize++;
+            }
+
+            if (cycleSize > 0) {
+                swaps += (cycleSize - 1);
+            }
+        }
+
+        return swaps;
+    }
+
+    // Function to find the minimum number of swaps required to convert binary tree to binary search tree
+    public int minSwapsToConvertToBST(TreeNode root) {
+        ArrayList<Integer> nodes = new ArrayList<>();
+        inorderTraversal(root, nodes);
+        return minSwapsToSort(nodes);
+    }
+
+    public static void main(String[] args) {
+        // Example to test the minSwapsToConvertToBST function
+        TreeNode root = new TreeNode(5);
+        root.left = new TreeNode(3);
+        root.right = new TreeNode(8);
+        root.left.left = new TreeNode(1);
+        root.left.right = new TreeNode(4);
+        root.right.left = new TreeNode(7);
+        root.right.right = new TreeNode(9);
+
+        BinaryTreeToBST bttb = new BinaryTreeToBST();
+        int swaps = bttb.minSwapsToConvertToBST(root);
+        System.out.println("Minimum number of swaps required to convert binary tree to BST: " + swaps); // Output depends on the tree structure
+    }
+}
