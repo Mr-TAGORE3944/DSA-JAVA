@@ -1,0 +1,88 @@
+import java.util.ArrayList;
+import java.util.Collections;
+
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+class BinaryTreeToBST {
+    Node root;
+
+    // Function to store the inorder traversal of a tree in an array
+    void storeInorder(Node node, ArrayList<Integer> inorder) {
+        if (node == null) {
+            return;
+        }
+
+        storeInorder(node.left, inorder);
+        inorder.add(node.data);
+        storeInorder(node.right, inorder);
+    }
+
+    // Function to convert the array back to a BST
+    int arrayToBST(Node node, ArrayList<Integer> inorder, int index) {
+        if (node == null) {
+            return index;
+        }
+
+        index = arrayToBST(node.left, inorder, index);
+        node.data = inorder.get(index);
+        index = index + 1;
+        index = arrayToBST(node.right, inorder, index);
+
+        return index;
+    }
+
+    // Function to convert a binary tree to a BST
+    void binaryTreeToBST(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        // Step 1: Store the inorder traversal of the binary tree in an array
+        ArrayList<Integer> inorder = new ArrayList<>();
+        storeInorder(node, inorder);
+
+        // Step 2: Sort the array
+        Collections.sort(inorder);
+
+        // Step 3: Convert the sorted array back to a BST
+        arrayToBST(node, inorder, 0);
+    }
+
+    // Function to print the inorder traversal of a tree
+    void printInorder(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        printInorder(node.left);
+        System.out.print(node.data + " ");
+        printInorder(node.right);
+    }
+
+    public static void main(String[] args) {
+        BinaryTreeToBST tree = new BinaryTreeToBST();
+        tree.root = new Node(10);
+        tree.root.left = new Node(30);
+        tree.root.right = new Node(15);
+        tree.root.left.left = new Node(20);
+        tree.root.right.right = new Node(5);
+
+        System.out.println("Inorder traversal of the given binary tree:");
+        tree.printInorder(tree.root);
+        System.out.println();
+
+        tree.binaryTreeToBST(tree.root);
+
+        System.out.println("Inorder traversal of the converted BST:");
+        tree.printInorder(tree.root);
+        System.out.println();
+    }
+}

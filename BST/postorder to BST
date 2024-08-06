@@ -1,0 +1,60 @@
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+class BinarySearchTree {
+    Node root;
+    int index; // To keep track of the current index in postorder array
+
+    // Function to construct BST from postorder traversal
+    Node constructBSTFromPostorder(int[] postorder, int min, int max) {
+        // Base case
+        if (index < 0) {
+            return null;
+        }
+
+        int key = postorder[index];
+
+        // The current element should be in the range defined by min and max
+        if (key < min || key > max) {
+            return null;
+        }
+
+        // Create a new node with the current element and decrement the index
+        Node node = new Node(key);
+        index--;
+
+        // Recursively construct the right and left subtrees
+        // Note that we construct the right subtree first since we are going backward in the postorder array
+        node.right = constructBSTFromPostorder(postorder, key, max);
+        node.left = constructBSTFromPostorder(postorder, min, key);
+
+        return node;
+    }
+
+    // Utility function to print inorder traversal of the BST
+    void inorderTraversal(Node node) {
+        if (node != null) {
+            inorderTraversal(node.left);
+            System.out.print(node.data + " ");
+            inorderTraversal(node.right);
+        }
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree tree = new BinarySearchTree();
+        int[] postorder = {1, 7, 5, 50, 40, 10};
+
+        tree.index = postorder.length - 1; // Initialize index to the last element of postorder array
+        tree.root = tree.constructBSTFromPostorder(postorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+
+        System.out.println("Inorder traversal of the constructed BST:");
+        tree.inorderTraversal(tree.root);
+    }
+}

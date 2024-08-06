@@ -1,0 +1,61 @@
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+class BinarySearchTree {
+    Node root;
+    Node head;  // This will be the head of the resulting linked list
+    Node prev;  // This will keep track of the previous node during in-order traversal
+
+    // Function to perform in-order traversal and flatten the tree
+    void flattenBST(Node node) {
+        if (node == null) {
+            return;
+        }
+
+        // Recur for the left subtree
+        flattenBST(node.left);
+
+        // Process the current node
+        if (prev == null) {
+            head = node;  // The leftmost node becomes the head of the list
+        } else {
+            prev.right = node;  // Link the previous node to the current node
+        }
+        node.left = null;  // Set the left child of the current node to null
+        prev = node;  // Update the previous node
+
+        // Recur for the right subtree
+        flattenBST(node.right);
+    }
+
+    // Function to print the flattened list
+    void printFlattenedList(Node node) {
+        while (node != null) {
+            System.out.print(node.data + " ");
+            node = node.right;
+        }
+        System.out.println();
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree tree = new BinarySearchTree();
+        tree.root = new Node(50);
+        tree.root.left = new Node(30);
+        tree.root.right = new Node(70);
+        tree.root.left.left = new Node(20);
+        tree.root.left.right = new Node(40);
+        tree.root.right.left = new Node(60);
+        tree.root.right.right = new Node(80);
+
+        tree.flattenBST(tree.root);
+        System.out.println("Flattened BST to sorted list:");
+        tree.printFlattenedList(tree.head);
+    }
+}

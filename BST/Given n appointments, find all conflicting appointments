@@ -1,0 +1,172 @@
+import java.util.*;
+
+public class Main {
+static class Pair<K, V> {
+	private K key;
+	private V value;
+
+	public Pair(K key, V value) {
+	this.key = key;
+	this.value = value;
+	}
+
+	public K getKey() {
+	return key;
+	}
+
+	public V getValue() {
+	return value;
+	}
+}
+
+public static void main(String[] args) {
+	// Given Appointments.
+	List<List<Integer>> v = new ArrayList<>();
+	v.add(Arrays.asList(1, 5));
+	v.add(Arrays.asList(3, 7));
+	v.add(Arrays.asList(2, 6));
+	v.add(Arrays.asList(10, 15));
+	v.add(Arrays.asList(5, 6));
+	v.add(Arrays.asList(4, 100));
+
+	// sort according to start time of meet/appointment.
+	// sort(v.begin(), v.end());
+	// number of pair or appointments.
+	int n = v.size();
+
+	// for stoping the overlapping
+	// vector<bool>vis(n,0);
+	// traverse over and check for it.
+	List<Pair<Pair<Integer, Integer>, Pair<Integer, Integer>>> result = new ArrayList<>();
+	for (int i = 0; i < n; i++) {
+	for (int j = i - 1; j >= 0; j--) {
+		// to reduce extra/unwanted comparisons.
+		// if(v[j][0]>v[i][1])break;
+		// else{
+		if (v.get(j).get(0) < v.get(i).get(1)) {
+		result.add(new Pair<>(
+			new Pair<>(v.get(i).get(0), v.get(i).get(1)),
+			new Pair<>(v.get(j).get(1), v.get(j).get(0))
+		));
+		}
+	}
+	}
+
+	// final output.
+	for (Pair<Pair<Integer, Integer>, Pair<Integer, Integer>> it : result) {
+	System.out.printf("[%d,%d] having Conflict with [%d,%d]\n",
+						it.getKey().getKey(), it.getKey().getValue(),
+						it.getValue().getKey(), it.getValue().getValue());
+	}
+}
+}
+
+
+
+
+
+
+
+
+
+
+
+//////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+import java.util.ArrayList;
+import java.util.List;
+
+class Interval {
+    int start, end;
+
+    Interval(int start, int end) {
+        this.start = start;
+        this.end = end;
+    }
+
+    @Override
+    public String toString() {
+        return "[" + start + ", " + end + "]";
+    }
+}
+
+class IntervalNode {
+    Interval interval;
+    int max;
+    IntervalNode left, right;
+
+    IntervalNode(Interval interval) {
+        this.interval = interval;
+        this.max = interval.end;
+        this.left = this.right = null;
+    }
+}
+
+class IntervalTree {
+    IntervalNode root;
+
+    // Insert a new interval into the interval tree
+    public IntervalNode insert(IntervalNode root, Interval interval) {
+        if (root == null) {
+            return new IntervalNode(interval);
+        }
+
+        int l = root.interval.start;
+        if (interval.start < l) {
+            root.left = insert(root.left, interval);
+        } else {
+            root.right = insert(root.right, interval);
+        }
+
+        if (root.max < interval.end) {
+            root.max = interval.end;
+        }
+
+        return root;
+    }
+
+    // Check if two intervals overlap
+    public boolean doOverlap(Interval i1, Interval i2) {
+        return (i1.start < i2.end && i2.start < i1.end);
+    }
+
+    // Find all conflicting intervals
+    public void findConflictingIntervals(IntervalNode root, Interval interval, List<Interval> conflicts) {
+        if (root == null) {
+            return;
+        }
+
+        if (doOverlap(root.interval, interval)) {
+            conflicts.add(root.interval);
+        }
+
+        if (root.left != null && root.left.max >= interval.start) {
+            findConflictingIntervals(root.left, interval, conflicts);
+        }
+
+        findConflictingIntervals(root.right, interval, conflicts);
+    }
+
+    // Insert an interval and check for conflicts
+    public List<Interval> insertAndCheck(Interval interval) {
+        List<Interval> conflicts = new ArrayList<>();
+        findConflictingIntervals(root, interval, conflicts);
+        root = insert(root, interval);
+        return conflicts;
+    }
+}
+
+public class FindConflictingAppointments {
+
+    public static void main(String[] args) {
+        IntervalTree intervalTree = new IntervalTree();
+        Interval[] appointments = {
+            new Interval(1, 5),
+            new Interval(3, 7),
+            new Interval(2, 6),
+            new Interval(10, 15),
+            new Interval(5, 6),
+            new Interval(4, 100)

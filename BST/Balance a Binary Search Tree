@@ -1,0 +1,91 @@
+import java.util.ArrayList;
+import java.util.List;
+
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+public class BSTBalancer {
+
+    // Method to perform inorder traversal and store nodes in a list
+    private void inorderTraversal(TreeNode root, List<TreeNode> nodes) {
+        if (root == null) {
+            return;
+        }
+        inorderTraversal(root.left, nodes);
+        nodes.add(root);
+        inorderTraversal(root.right, nodes);
+    }
+
+    // Method to build a balanced BST from the sorted list of nodes
+    private TreeNode buildBalancedBST(List<TreeNode> nodes, int start, int end) {
+        if (start > end) {
+            return null;
+        }
+        int mid = start + (end - start) / 2;
+        TreeNode node = nodes.get(mid);
+
+        node.left = buildBalancedBST(nodes, start, mid - 1);
+        node.right = buildBalancedBST(nodes, mid + 1, end);
+
+        return node;
+    }
+
+    // Main method to balance a BST
+    public TreeNode balanceBST(TreeNode root) {
+        List<TreeNode> nodes = new ArrayList<>();
+        inorderTraversal(root, nodes);
+        return buildBalancedBST(nodes, 0, nodes.size() - 1);
+    }
+
+    // Helper method to insert nodes into the BST (for testing purposes)
+    public TreeNode insert(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+        if (val < root.val) {
+            root.left = insert(root.left, val);
+        } else {
+            root.right = insert(root.right, val);
+        }
+        return root;
+    }
+
+    // Method to print the tree in inorder (for testing purposes)
+    public void printInOrder(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+        printInOrder(root.left);
+        System.out.print(root.val + " ");
+        printInOrder(root.right);
+    }
+
+    // Main method to test the balanceBST function
+    public static void main(String[] args) {
+        BSTBalancer bstBalancer = new BSTBalancer();
+
+        TreeNode root = null;
+        int[] values = {10, 5, 1, 7, 40, 50};
+        for (int value : values) {
+            root = bstBalancer.insert(root, value);
+        }
+
+        System.out.println("Original BST:");
+        bstBalancer.printInOrder(root);
+        System.out.println();
+
+        TreeNode balancedRoot = bstBalancer.balanceBST(root);
+
+        System.out.println("Balanced BST:");
+        bstBalancer.printInOrder(balancedRoot);
+    }
+}

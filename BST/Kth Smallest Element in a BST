@@ -1,0 +1,68 @@
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+class BinarySearchTree {
+    Node root;
+
+    // Utility class to keep track of count and result during traversal
+    class Count {
+        int count = 0;
+    }
+
+    // Function to perform inorder traversal and find the k-th smallest element
+    void kthSmallestUtil(Node node, int k, Count count, Result result) {
+        // Base case
+        if (node == null || count.count >= k) {
+            return;
+        }
+
+        // Recur for left subtree
+        kthSmallestUtil(node.left, k, count, result);
+
+        // Increment count of visited nodes
+        count.count++;
+
+        // If count becomes k now, then this is the k-th smallest node
+        if (count.count == k) {
+            result.data = node.data;
+            return;
+        }
+
+        // Recur for right subtree
+        kthSmallestUtil(node.right, k, count, result);
+    }
+
+    // Function to find k-th smallest element
+    int kthSmallest(Node node, int k) {
+        Count count = new Count(); // Initialize count
+        Result result = new Result(); // Initialize result to store k-th smallest element
+        kthSmallestUtil(node, k, count, result);
+        return result.data;
+    }
+
+    // Helper class to store the result
+    class Result {
+        int data = Integer.MIN_VALUE;
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree tree = new BinarySearchTree();
+        tree.root = new Node(50);
+        tree.root.left = new Node(30);
+        tree.root.right = new Node(70);
+        tree.root.left.left = new Node(20);
+        tree.root.left.right = new Node(40);
+        tree.root.right.left = new Node(60);
+        tree.root.right.right = new Node(80);
+
+        int k = 3;
+        System.out.println("The " + k + "-th smallest element is " + tree.kthSmallest(tree.root, k));
+    }
+}

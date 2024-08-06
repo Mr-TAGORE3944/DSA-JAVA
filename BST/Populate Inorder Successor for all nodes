@@ -1,0 +1,85 @@
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode next; // This will point to the inorder successor
+    
+    TreeNode(int x) {
+        val = x;
+        left = right = next = null;
+    }
+}
+
+public class InorderSuccessorPopulator {
+
+    // Previous node in the in-order traversal
+    private TreeNode prev = null;
+
+    public void populateInorderSuccessor(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        // Recursively traverse the left subtree
+        populateInorderSuccessor(root.left);
+
+        // If prev is not null, then set the next of prev to the current node
+        if (prev != null) {
+            prev.next = root;
+        }
+
+        // Update prev to the current node
+        prev = root;
+
+        // Recursively traverse the right subtree
+        populateInorderSuccessor(root.right);
+    }
+
+    // Helper method to insert nodes into the BST (for testing purposes)
+    public TreeNode insert(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+        if (val < root.val) {
+            root.left = insert(root.left, val);
+        } else {
+            root.right = insert(root.right, val);
+        }
+        return root;
+    }
+
+    // Main method to test the populateInorderSuccessor function
+    public static void main(String[] args) {
+        InorderSuccessorPopulator tree = new InorderSuccessorPopulator();
+
+        TreeNode root = null;
+        int[] values = {10, 5, 1, 7, 40, 50};
+        for (int value : values) {
+            root = tree.insert(root, value);
+        }
+
+        tree.populateInorderSuccessor(root);
+
+        // Print inorder successors of all nodes
+        printInorderSuccessors(root);
+    }
+
+    // Helper method to print inorder successors of all nodes
+    public static void printInorderSuccessors(TreeNode root) {
+        if (root == null) {
+            return;
+        }
+
+        printInorderSuccessors(root.left);
+
+        System.out.print("Node " + root.val + " -> ");
+        if (root.next != null) {
+            System.out.println(root.next.val);
+        } else {
+            System.out.println("null");
+        }
+
+        printInorderSuccessors(root.right);
+    }
+}

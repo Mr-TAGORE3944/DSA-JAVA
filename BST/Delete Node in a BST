@@ -1,0 +1,96 @@
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+class BinarySearchTree {
+    Node root;
+
+    // Function to find the minimum value node in a tree
+    Node findMin(Node node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
+    // Function to delete a node from the BST
+    Node deleteNode(Node root, int key) {
+        // Base case: if the tree is empty
+        if (root == null) {
+            return root;
+        }
+
+        // Otherwise, recur down the tree
+        if (key < root.data) {
+            root.left = deleteNode(root.left, key);
+        } else if (key > root.data) {
+            root.right = deleteNode(root.right, key);
+        } else {
+            // Node with only one child or no child
+            if (root.left == null) {
+                return root.right;
+            } else if (root.right == null) {
+                return root.left;
+            }
+
+            // Node with two children: Get the inorder successor (smallest in the right subtree)
+            Node temp = findMin(root.right);
+
+            // Copy the inorder successor's content to this node
+            root.data = temp.data;
+
+            // Delete the inorder successor
+            root.right = deleteNode(root.right, temp.data);
+        }
+
+        return root;
+    }
+
+    // Function to perform inorder traversal of the tree
+    void inorderTraversal(Node root) {
+        if (root != null) {
+            inorderTraversal(root.left);
+            System.out.print(root.data + " ");
+            inorderTraversal(root.right);
+        }
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree tree = new BinarySearchTree();
+        tree.root = new Node(50);
+        tree.root.left = new Node(30);
+        tree.root.right = new Node(70);
+        tree.root.left.left = new Node(20);
+        tree.root.left.right = new Node(40);
+        tree.root.right.left = new Node(60);
+        tree.root.right.right = new Node(80);
+
+        System.out.println("Inorder traversal of the given tree:");
+        tree.inorderTraversal(tree.root);
+        System.out.println();
+
+        System.out.println("Deleting 20");
+        tree.root = tree.deleteNode(tree.root, 20);
+        System.out.println("Inorder traversal of the modified tree:");
+        tree.inorderTraversal(tree.root);
+        System.out.println();
+
+        System.out.println("Deleting 30");
+        tree.root = tree.deleteNode(tree.root, 30);
+        System.out.println("Inorder traversal of the modified tree:");
+        tree.inorderTraversal(tree.root);
+        System.out.println();
+
+        System.out.println("Deleting 50");
+        tree.root = tree.deleteNode(tree.root, 50);
+        System.out.println("Inorder traversal of the modified tree:");
+        tree.inorderTraversal(tree.root);
+        System.out.println();
+    }
+}

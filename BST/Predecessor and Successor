@@ -1,0 +1,82 @@
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+class BinarySearchTree {
+    Node root;
+
+    // Function to find the predecessor and successor
+    void findPreSuc(Node root, int key) {
+        Node pre = null, suc = null;
+
+        // Find the key
+        while (root != null) {
+            if (root.data < key) {
+                pre = root;
+                root = root.right;
+            } else if (root.data > key) {
+                suc = root;
+                root = root.left;
+            } else {
+                // If the key has a left subtree, find the maximum value in it
+                if (root.left != null) {
+                    pre = findMax(root.left);
+                }
+
+                // If the key has a right subtree, find the minimum value in it
+                if (root.right != null) {
+                    suc = findMin(root.right);
+                }
+                break;
+            }
+        }
+
+        if (pre != null) {
+            System.out.println("Predecessor is " + pre.data);
+        } else {
+            System.out.println("No Predecessor");
+        }
+
+        if (suc != null) {
+            System.out.println("Successor is " + suc.data);
+        } else {
+            System.out.println("No Successor");
+        }
+    }
+
+    // Helper function to find the maximum value node
+    Node findMax(Node node) {
+        while (node.right != null) {
+            node = node.right;
+        }
+        return node;
+    }
+
+    // Helper function to find the minimum value node
+    Node findMin(Node node) {
+        while (node.left != null) {
+            node = node.left;
+        }
+        return node;
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree tree = new BinarySearchTree();
+        tree.root = new Node(20);
+        tree.root.left = new Node(10);
+        tree.root.right = new Node(30);
+        tree.root.left.left = new Node(5);
+        tree.root.left.right = new Node(15);
+        tree.root.right.left = new Node(25);
+        tree.root.right.right = new Node(35);
+
+        int key = 20;
+        tree.findPreSuc(tree.root, key);
+    }
+}

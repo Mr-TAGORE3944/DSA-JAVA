@@ -1,0 +1,43 @@
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+class BinarySearchTree {
+    Node root;
+
+    // Function to find the minimum value node in the BST
+    Node findMin(Node node) {
+        if (node == null) {
+            return null;
+        }
+
+        // Loop down to find the leftmost leaf
+        while (node.left != null) {
+            node = node.left;
+        }
+
+        return node;
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree tree = new BinarySearchTree();
+        tree.root = new Node(20);
+        tree.root.left = new Node(10);
+        tree.root.right = new Node(30);
+        tree.root.left.left = new Node(5);
+        tree.root.left.right = new Node(15);
+
+        Node minNode = tree.findMin(tree.root);
+        if (minNode != null) {
+            System.out.println("The minimum value in the BST is " + minNode.data);
+        } else {
+            System.out.println("The tree is empty.");
+        }
+    }
+}

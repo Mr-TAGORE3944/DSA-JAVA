@@ -1,0 +1,58 @@
+// Definition for a binary tree node.
+class TreeNode {
+    int val;
+    TreeNode left;
+    TreeNode right;
+    TreeNode(int x) { val = x; }
+}
+
+public class BSTRangeCounter {
+
+    public int countNodesInRange(TreeNode root, int low, int high) {
+        if (root == null) {
+            return 0;
+        }
+
+        // If current node is in range, then include it in count and continue to both subtrees
+        if (root.val >= low && root.val <= high) {
+            return 1 + countNodesInRange(root.left, low, high) + countNodesInRange(root.right, low, high);
+        }
+        // If current node is smaller than low, then we can ignore the left subtree
+        else if (root.val < low) {
+            return countNodesInRange(root.right, low, high);
+        }
+        // If current node is greater than high, then we can ignore the right subtree
+        else {
+            return countNodesInRange(root.left, low, high);
+        }
+    }
+
+    // Helper method to insert nodes into the BST (for testing purposes)
+    public TreeNode insert(TreeNode root, int val) {
+        if (root == null) {
+            return new TreeNode(val);
+        }
+        if (val < root.val) {
+            root.left = insert(root.left, val);
+        } else {
+            root.right = insert(root.right, val);
+        }
+        return root;
+    }
+
+    // Main method to test the countNodesInRange function
+    public static void main(String[] args) {
+        BSTRangeCounter bst = new BSTRangeCounter();
+
+        TreeNode root = null;
+        int[] values = {10, 5, 1, 7, 40, 50};
+        for (int value : values) {
+            root = bst.insert(root, value);
+        }
+
+        int low = 5;
+        int high = 45;
+        int count = bst.countNodesInRange(root, low, high);
+        System.out.println("Number of nodes in range [" + low + ", " + high + "]: " + count);
+    }
+}

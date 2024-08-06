@@ -1,0 +1,52 @@
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(int item) {
+        data = item;
+        left = right = null;
+    }
+}
+
+class BinarySearchTree {
+    Node root;
+
+    // Helper function to check for dead ends
+    boolean isDeadEnd(Node node, int min, int max) {
+        // Base case
+        if (node == null) {
+            return false;
+        }
+
+        // If this node is a dead end
+        if (min == max) {
+            return true;
+        }
+
+        // Recur for left and right subtrees with updated ranges
+        return isDeadEnd(node.left, min, node.data - 1) || isDeadEnd(node.right, node.data + 1, max);
+    }
+
+    // Function to check if the BST contains a dead end
+    boolean containsDeadEnd(Node root) {
+        return isDeadEnd(root, 1, Integer.MAX_VALUE);
+    }
+
+    public static void main(String[] args) {
+        BinarySearchTree tree = new BinarySearchTree();
+        tree.root = new Node(8);
+        tree.root.left = new Node(5);
+        tree.root.right = new Node(11);
+        tree.root.left.left = new Node(2);
+        tree.root.left.right = new Node(7);
+        tree.root.left.left.left = new Node(1);
+        tree.root.right.left = new Node(10);
+        tree.root.right.right = new Node(12);
+
+        if (tree.containsDeadEnd(tree.root)) {
+            System.out.println("The BST contains a dead end.");
+        } else {
+            System.out.println("The BST does not contain a dead end.");
+        }
+    }
+}
