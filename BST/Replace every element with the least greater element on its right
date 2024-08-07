@@ -1,0 +1,157 @@
+// Java program to replace every element with
+// the least greater element on its right gfgs
+import java.io.*;
+
+class BinarySearchTree {
+
+	// A binary Tree node
+	class Node {
+		int data;
+		Node left, right;
+
+		Node(int d)
+		{
+			data = d;
+			left = right = null;
+		}
+	}
+
+	// Root of BST
+	static Node root;
+	static Node succ;
+
+	// Constructor
+	BinarySearchTree()
+	{
+		root = null;
+		succ = null;
+	}
+
+	// A utility function to insert a new node with
+	// given data in BST and find its successor
+	Node insert(Node node, int data)
+	{
+
+		// If the tree is empty, return a new node
+		if (node == null) {
+			node = new Node(data);
+		}
+
+		// If key is smaller than root's key,
+		// go to left subtree and set successor
+		// as current node
+		if (data < node.data) {
+			succ = node;
+			node.left = insert(node.left, data);
+		}
+
+		// Go to right subtree
+		else if (data > node.data)
+			node.right = insert(node.right, data);
+
+		return node;
+	}
+
+	// Function to replace every element with the
+	// least greater element on its right
+	static void replace(int arr[], int n)
+	{
+		BinarySearchTree tree = new BinarySearchTree();
+
+		// start from right to left
+		for (int i = n - 1; i >= 0; i--) {
+			succ = null;
+
+			// Insert current element into BST and
+			// find its inorder successor
+			root = tree.insert(root, arr[i]);
+
+			// Replace element by its inorder
+			// successor in BST
+			if (succ != null)
+				arr[i] = succ.data;
+
+			// No inorder successor
+			else
+				arr[i] = -1;
+		}
+	}
+
+	// Driver code
+	public static void main(String[] args)
+	{
+		int arr[]
+			= new int[] { 8, 58, 71, 18, 31, 32, 63, 92,
+						43, 3, 91, 93, 25, 80, 28 };
+		int n = arr.length;
+
+		replace(arr, n);
+
+		for (int i = 0; i < n; i++)
+			System.out.print(arr[i] + " ");
+	}
+}
+
+// The code is contributed by Tushar Bansal
+
+
+////////////////////////////////////////////////////////////////////////////////
+//chat
+
+
+
+
+// To replace every element in an array with the least greater element on its right in Java, you can use a combination of sorting and binary search. Here’s a step-by-step approach to achieve this:
+
+// 1. **Create a result array** initialized to hold the least greater elements.
+// 2. **Traverse the array from right to left**, maintaining a sorted list of elements seen so far.
+// 3. For each element, **find the smallest element in the sorted list that is greater than the current element** using binary search.
+// 4. **Replace the current element** with the found element (or -1 if no such element exists).
+
+// Here's a Java implementation of this approach:
+
+// ```java
+import java.util.*;
+
+public class LeastGreaterElement {
+
+    // Function to replace each element with the least greater element on its right
+    public static void replaceWithLeastGreater(int[] arr) {
+        int n = arr.length;
+        // Result array to store the least greater elements
+        int[] result = new int[n];
+        Arrays.fill(result, -1);  // Initialize result array with -1
+
+        // TreeSet to maintain the sorted order of elements seen so far
+        TreeSet<Integer> seen = new TreeSet<>();
+
+        // Traverse the array from right to left
+        for (int i = n - 1; i >= 0; i--) {
+            // If there's a least greater element in the set, update the result
+            if (seen.higher(arr[i]) != null) {
+                result[i] = seen.higher(arr[i]);
+            }
+            // Add the current element to the set
+            seen.add(arr[i]);
+        }
+
+        // Copy the result array back to the original array
+        System.arraycopy(result, 0, arr, 0, n);
+    }
+
+    // Main function to test the above method
+    public static void main(String[] args) {
+        int[] arr = {8, 58, 71, 18, 31, 32, 63, 92, 43, 3, 91, 93, 25, 80, 28};
+        replaceWithLeastGreater(arr);
+        System.out.println("Replaced array: " + Arrays.toString(arr));
+    }
+}
+// ```
+
+// ### Explanation:
+// 1. **TreeSet**: The `TreeSet` is used to maintain the elements in sorted order. The `higher()` method of `TreeSet` returns the least greater element.
+// 2. **Traversal**: The array is traversed from right to left to ensure that we are only considering the elements that are on the right of the current element.
+// 3. **Result Array**: The `result` array is initialized with `-1`, and it is updated with the least greater elements found using the `TreeSet`.
+// 4. **Output**: Finally, the result array is printed, showing the original array elements replaced with their least greater elements.
+
+// This approach ensures that each element is processed efficiently, making use of the binary search capabilities of the `TreeSet` to find the least greater element in logarithmic time.

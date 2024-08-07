@@ -7,6 +7,7 @@ public class Implementation_of_LinkedList {
         public static class Node{
             int data;
             Node next;
+            public int val;
             
             Node(int data){
                 this.data = data;

@@ -1,0 +1,112 @@
+// The problem of determining the number of operations needed to make a network connected can be approached using graph theory. The problem can be mapped to finding the minimum number of edges required to connect all the nodes in a graph. Specifically, this can be solved using concepts from connected components and union-find (disjoint set) data structures.
+
+// Here's a Java implementation to solve this problem:
+
+// ```java
+public class NetworkConnected {
+
+    public int makeConnected(int n, int[][] connections) {
+        if (connections.length < n - 1) {
+            return -1; // Not enough cables to connect all computers
+        }
+
+        // Initialize parent and rank arrays for union-find
+        int[] parent = new int[n];
+        int[] rank = new int[n];
+
+        for (int i = 0; i < n; i++) {
+            parent[i] = i;
+            rank[i] = 0;
+        }
+
+        // Find the parent (root) of a node
+        int find(int u) {
+            if (parent[u] != u) {
+                parent[u] = find(parent[u]); // Path compression
+            }
+            return parent[u];
+        }
+
+        // Union by rank
+        void union(int u, int v) {
+            int rootU = find(u);
+            int rootV = find(v);
+
+            if (rootU != rootV) {
+                if (rank[rootU] > rank[rootV]) {
+                    parent[rootV] = rootU;
+                } else if (rank[rootU] < rank[rootV]) {
+                    parent[rootU] = rootV;
+                } else {
+                    parent[rootV] = rootU;
+                    rank[rootU]++;
+                }
+            }
+        }
+
+        // Union all connected nodes
+        for (int[] connection : connections) {
+            union(connection[0], connection[1]);
+        }
+
+        // Count the number of connected components
+        int components = 0;
+        for (int i = 0; i < n; i++) {
+            if (find(i) == i) {
+                components++;
+            }
+        }
+
+        // Number of operations needed is components - 1
+        return components - 1;
+    }
+
+    public static void main(String[] args) {
+        NetworkConnected nc = new NetworkConnected();
+
+        int n1 = 4;
+        int[][] connections1 = {{0, 1}, {0, 2}, {1, 2}};
+        System.out.println("Minimum number of operations to connect all computers: " +
+            nc.makeConnected(n1, connections1)); // Output: 1
+
+        int n2 = 6;
+        int[][] connections2 = {{0, 1}, {0, 2}, {0, 3}, {1, 2}, {1, 3}};
+        System.out.println("Minimum number of operations to connect all computers: " +
+            nc.makeConnected(n2, connections2)); // Output: 2
+
+        int n3 = 6;
+        int[][] connections3 = {{0, 1}, {0, 2}, {0, 3}, {1, 2}};
+        System.out.println("Minimum number of operations to connect all computers: " +
+            nc.makeConnected(n3, connections3)); // Output: -1
+    }
+}
+// ```
+
+// ### Explanation
+
+// 1. **Insufficient Connections Check**:
+//    - If the number of connections is less than `n - 1`, it's impossible to connect all nodes. This is because a minimum of `n - 1` edges is needed to connect `n` nodes.
+
+// 2. **Union-Find Initialization**:
+//    - The `parent` array keeps track of the parent of each node.
+//    - The `rank` array helps in balancing the tree formed by the union-find structure.
+
+// 3. **Find Method**:
+//    - Finds the root of a node with path compression to flatten the structure for efficiency.
+
+// 4. **Union Method**:
+//    - Unites two sets by attaching the smaller tree under the root of the larger tree (union by rank).
+
+// 5. **Union All Connections**:
+//    - For each connection, unite the connected nodes.
+
+// 6. **Count Components**:
+//    - After all unions, the number of connected components is counted by checking how many nodes are their own parent.
+
+// 7. **Calculate Minimum Operations**:
+//    - The number of operations needed to connect all components is `components - 1`.
+
+// 8. **Main Method**:
+//    - Demonstrates examples with different inputs to validate the implementation.
+
+// This approach efficiently finds the minimum number of operations needed to make the network connected using the union-find data structure for optimal performance.

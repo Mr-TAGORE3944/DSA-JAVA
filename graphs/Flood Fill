@@ -1,0 +1,72 @@
+// The Flood Fill algorithm is commonly used for image processing and is similar to the "paint bucket" tool in graphics programs. Given a 2D array (image) where each cell represents a pixel value, the Flood Fill algorithm changes the color of a given region to a new color.
+
+// Here is a Java implementation of the Flood Fill algorithm:
+
+// ```java
+public class FloodFill {
+    // Helper method to perform the flood fill
+    public void floodFillHelper(int[][] image, int sr, int sc, int newColor, int originalColor) {
+        // Check if the current pixel is out of bounds or not the original color
+        if (sr < 0 || sr >= image.length || sc < 0 || sc >= image[0].length || image[sr][sc] != originalColor) {
+            return;
+        }
+
+        // Update the color of the current pixel
+        image[sr][sc] = newColor;
+
+        // Recursively call flood fill for all 4 directions (up, down, left, right)
+        floodFillHelper(image, sr - 1, sc, newColor, originalColor); // up
+        floodFillHelper(image, sr + 1, sc, newColor, originalColor); // down
+        floodFillHelper(image, sr, sc - 1, newColor, originalColor); // left
+        floodFillHelper(image, sr, sc + 1, newColor, originalColor); // right
+    }
+
+    // Main method to perform the flood fill
+    public int[][] floodFill(int[][] image, int sr, int sc, int newColor) {
+        int originalColor = image[sr][sc];
+
+        // If the new color is the same as the original color, no need to do anything
+        if (originalColor != newColor) {
+            floodFillHelper(image, sr, sc, newColor, originalColor);
+        }
+
+        return image;
+    }
+
+    public static void main(String[] args) {
+        FloodFill ff = new FloodFill();
+        int[][] image = {
+            {1, 1, 1},
+            {1, 1, 0},
+            {1, 0, 1}
+        };
+        int sr = 1, sc = 1, newColor = 2;
+        int[][] result = ff.floodFill(image, sr, sc, newColor);
+
+        // Print the result
+        for (int[] row : result) {
+            for (int pixel : row) {
+                System.out.print(pixel + " ");
+            }
+            System.out.println();
+        }
+    }
+}
+```
+
+### Explanation
+
+1. **Main Method (`floodFill`)**:
+   - The `floodFill` method initializes the flood fill process.
+   - It checks if the new color is different from the original color to avoid unnecessary operations.
+   - It calls the `floodFillHelper` method to perform the recursive flood fill.
+
+2. **Helper Method (`floodFillHelper`)**:
+   - This method performs the actual flood fill using recursion.
+   - It first checks if the current pixel is within the bounds of the image and if it matches the original color.
+   - If so, it changes the pixel color to the new color and recursively calls itself for all four neighboring pixels (up, down, left, right).
+
+3. **Example Usage**:
+   - The `main` method demonstrates an example usage of the `FloodFill` class, applying the flood fill algorithm to a 3x3 image. It prints the result to the console.
+
+This implementation ensures that the flood fill operation is applied correctly to all connected pixels of the same color as the starting pixel.

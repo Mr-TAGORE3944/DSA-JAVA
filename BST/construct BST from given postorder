@@ -1,0 +1,96 @@
+// Constructing a Binary Search Tree (BST) from a given postorder traversal involves recursively constructing the tree by considering the properties of BST and postorder traversal.
+
+// ### Algorithm Outline
+// 1. The last element of the postorder traversal is the root of the BST.
+// 2. Elements before the root in the postorder array can be divided into two groups: 
+//    - Elements in the left subtree (those smaller than the root).
+//    - Elements in the right subtree (those larger than the root).
+// 3. Recursively apply the same process to the left and right subarrays.
+
+// ### Implementation in Java
+
+// Here's a Java implementation of the above approach:
+
+// ```java
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+class BSTFromPostorder {
+    private int postIndex;
+
+    public TreeNode constructBST(int[] postorder) {
+        postIndex = postorder.length - 1;
+        return constructBSTHelper(postorder, Integer.MIN_VALUE, Integer.MAX_VALUE);
+    }
+
+    private TreeNode constructBSTHelper(int[] postorder, int min, int max) {
+        // Base case: if postIndex is out of bounds
+        if (postIndex < 0) {
+            return null;
+        }
+
+        int key = postorder[postIndex];
+        
+        // The current node's value must be within the min and max range
+        if (key < min || key > max) {
+            return null;
+        }
+
+        // Create the current node and move to the next element
+        TreeNode root = new TreeNode(key);
+        postIndex--;
+
+        // Recursively construct the right and left subtrees
+        // Note: Right subtree is constructed before left subtree
+        root.right = constructBSTHelper(postorder, key, max);
+        root.left = constructBSTHelper(postorder, min, key);
+
+        return root;
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        int[] postorder = {1, 7, 5, 20, 15, 10};
+        BSTFromPostorder bstConstructor = new BSTFromPostorder();
+        TreeNode root = bstConstructor.constructBST(postorder);
+
+        // Function to print inorder traversal of the tree
+        printInorder(root);
+    }
+
+    public static void printInorder(TreeNode node) {
+        if (node == null) {
+            return; 
+        }+  
+        
+        printInorder(node.left);
+        System.out.print(node.val + " ");
+        printInorder(node.right);
+    }
+}
+// ```
+
+// ### Explanation
+// 1. **TreeNode Class**: A simple class to represent the nodes of the tree.
+// 2. **BSTFromPostorder Class**: Contains the logic for constructing the BST.
+//    - `postIndex`: Tracks the current index in the postorder array.
+//    - `constructBST(int[] postorder)`: Initializes the postIndex and starts the construction process.
+//    - `constructBSTHelper(int[] postorder, int min, int max)`: Recursively constructs the BST within the given range `[min, max]`.
+//      - The base case checks if the postIndex is out of bounds.
+//      - The current node is created using the value at postIndex.
+//      - The right subtree is constructed before the left subtree because of the postorder property (left-right-root).
+
+// 3. **Main Class**: Tests the BST construction with an example postorder array and prints the inorder traversal of the constructed BST to verify the result.
+
+// ### Verification
+// To verify the constructed BST, we perform an inorder traversal. If the tree is constructed correctly, the inorder traversal should produce a sorted sequence of the input postorder array.
+
+// This approach ensures that each element in the postorder array is processed only once, making it efficient with a time complexity of \(O(n)\), where \(n\) is the number of elements in the postorder array.

@@ -5,6 +5,8 @@ import java.util.LinkedList;
 import java.util.Map;
 import java.util.Queue;
 
+import LinkedList.Implementation_of_LinkedList.Node;
+
 public class CloneGraph {
     class Solution {
     public Node cloneGraph(Node node) {

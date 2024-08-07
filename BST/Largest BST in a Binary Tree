@@ -1,0 +1,237 @@
+// Java program to find largest BST in a Binary Tree.
+
+/* A binary tree node has data, pointer to left child and a
+ * pointer to right child */
+class Node {
+    int data;
+    Node left, right;
+
+    public Node(final int d) { data = d; }
+}
+
+class GFG {
+
+    public static void main(String[] args)
+    {
+
+        /* Let us construct the following Tree
+         60
+        /  \
+       65  70
+      /
+     50 */
+
+        final Node node1 = new Node(60);
+        node1.left = new Node(65);
+        node1.right = new Node(70);
+        node1.left.left = new Node(50);
+
+        System.out.print("Size of the largest BST is "
+                         + Solution.largestBst(node1)
+                         + "\n");
+    }
+}
+
+class Solution {
+    static int MAX = Integer.MAX_VALUE;
+    static int MIN = Integer.MIN_VALUE;
+
+    static class nodeInfo {
+        int size; // Size of subtree
+        int max; // Min value in subtree
+        int min; // Max value in subtree
+        boolean isBST; // If subtree is BST
+
+        nodeInfo() {}
+
+        nodeInfo(int size, int max, int min, boolean isBST)
+        {
+            this.size = size;
+            this.max = max;
+            this.min = min;
+            this.isBST = isBST;
+        }
+    }
+
+    static nodeInfo largestBST(Node root)
+    {
+
+        // Base case : When the current subtree is empty or
+        // the node corresponds to a null.
+        if (root == null) {
+            return new nodeInfo(0, Integer.MIN_VALUE,
+                                Integer.MAX_VALUE, true);
+        }
+        // We will here do the postorder traversal since we
+        // want our left and right subtrees to be computed
+        // first.
+
+        // Recur for left subtree and right subtrees
+        nodeInfo left = largestBST(root.left);
+        nodeInfo right = largestBST(root.right);
+
+        // Create a new nodeInfo variable to store info
+        // about the current node.
+        nodeInfo returnInfo = new nodeInfo();
+
+        returnInfo.min = Math.min(left.min, root.data);
+        returnInfo.max = Math.max(right.max, root.data);
+        returnInfo.isBST = left.isBST && right.isBST
+                           && root.data > left.max
+                           && root.data < right.min;
+
+        /*
+        If suppose the left and right subtrees of the
+        current node are BST and the current node value is
+        greater than the maximum value in the left subtree
+        and also the current node value is smaller that the
+        minimum value in the right subtree (Basic conditions
+        for the formation of BST) then our whole subtree
+        with the root as current root can be consider as a
+        BST. Hence the size of the BST will become size of
+        left BST subtree + size of right BST subtree +
+        1(adding current node).
+
+        Else we will consider the largest of the left BST or
+        the  right BST.
+        */
+
+        /*We need to find maximum height BST subtree then
+        adding the height of left an right subtree will not
+        give the maximum height, we need to find max.
+        */
+        if (returnInfo.isBST)
+
+            // Calculate the size of subtree if
+            // this is a BST
+            returnInfo.size = left.size + right.size + 1;
+        else
+            returnInfo.size
+                = Math.max(left.size, right.size);
+
+        return returnInfo;
+    }
+
+    // Return the size of the largest sub-tree which is also
+    // a BST
+    static int largestBst(Node root)
+    {
+        return largestBST(root).size;
+    }
+}
+// This code is contributed by Andrei Sljusar
+// This code is updated by Utkarsh Saxena.
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+// Certainly! Here's how you can find the largest BST in a binary tree using Java:
+
+// ### Algorithm Outline
+// 1. Perform a postorder traversal (left-right-root) to evaluate each node.
+// 2. For each node, determine if the subtree rooted at that node is a BST.
+// 3. Keep track of the size, minimum value, and maximum value of each subtree.
+// 4. Update the largest BST size found so far.
+
+// ### Java Implementation
+
+// Here is a detailed Java implementation:
+
+// ```java
+class TreeNode {
+    int val;
+    TreeNode left, right;
+
+    TreeNode(int x) {
+        val = x;
+        left = right = null;
+    }
+}
+
+class Solution {
+    // Helper class to store the information about the BST
+    class BSTInfo {
+        boolean isBST;
+        int size;
+        int min;
+        int max;
+
+        BSTInfo(boolean isBST, int size, int min, int max) {
+            this.isBST = isBST;
+            this.size = size;
+            this.min = min;
+            this.max = max;
+        }
+    }
+
+    private int maxSize = 0;
+
+    public int largestBSTSubtree(TreeNode root) {
+        postorder(root);
+        return maxSize;
+    }
+
+    private BSTInfo postorder(TreeNode node) {
+        // An empty tree is a BST of size 0.
+        if (node == null) {
+            return new BSTInfo(true, 0, Integer.MAX_VALUE, Integer.MIN_VALUE);
+        }
+
+        // Recursively get info from the left and right subtrees.
+        BSTInfo leftInfo = postorder(node.left);
+        BSTInfo rightInfo = postorder(node.right);
+
+        // Check if the current node is a valid BST.
+        if (leftInfo.isBST && rightInfo.isBST &&
+            node.val > leftInfo.max && node.val < rightInfo.min) {
+
+            int size = leftInfo.size + rightInfo.size + 1;
+            int min = Math.min(node.val, leftInfo.min);
+            int max = Math.max(node.val, rightInfo.max);
+
+            maxSize = Math.max(maxSize, size);
+
+            return new BSTInfo(true, size, min, max);
+        }
+
+        return new BSTInfo(false, 0, 0, 0);
+    }
+}
+
+public class Main {
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+
+        TreeNode root = new TreeNode(10);
+        root.left = new TreeNode(5);
+        root.right = new TreeNode(15);
+        root.left.left = new TreeNode(1);
+        root.left.right = new TreeNode(8);
+        root.right.right = new TreeNode(7);
+
+        System.out.println("Size of the largest BST is: " + solution.largestBSTSubtree(root));
+    }
+}
+// ```
+
+// ### Explanation
+
+// 1. **TreeNode Class**: A simple class to represent the nodes of the tree.
+// 2. **BSTInfo Class**: A helper class to store information about each subtree during the traversal.
+//    - `isBST`: Whether the subtree is a BST.
+//    - `size`: The size of the subtree.
+//    - `min`: The minimum value in the subtree.
+//    - `max`: The maximum value in the subtree.
+// 3. **Solution Class**: Contains the main logic for finding the largest BST.
+//    - `maxSize`: Keeps track of the largest BST size found.
+//    - `largestBSTSubtree(TreeNode root)`: Starts the postorder traversal and returns the size of the largest BST.
+//    - `postorder(TreeNode node)`: Recursively processes each node to determine if the subtree is a BST and updates the largest BST size.
+
+// 4. **Main Class**: To test the solution with an example tree.
+
+// This solution ensures that each node is processed only once, making it efficient with a time complexity of \(O(n)\), where \(n\) is the number of nodes in the tree.
