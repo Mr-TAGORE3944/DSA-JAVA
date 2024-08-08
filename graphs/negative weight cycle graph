@@ -1,0 +1,201 @@
+public class FloydWarshallNegativeCycle {
+
+    final static int INF = 99999; // A large number to represent infinity
+
+    public static void main(String[] args) {
+        int graph[][] = {
+            {0, 1, INF, INF},
+            {INF, 0, -1, INF},
+            {INF, INF, 0, -1},
+            {-1, INF, INF, 0}
+        };
+
+        FloydWarshallNegativeCycle a = new FloydWarshallNegativeCycle();
+        a.floydWarshall(graph);
+    }
+
+    void floydWarshall(int graph[][]) {
+        int V = graph.length;
+        int dist[][] = new int[V][V];
+
+        // Initialize the solution matrix same as input graph matrix
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                dist[i][j] = graph[i][j];
+            }
+        }
+
+        // Add all vertices one by one to the set of intermediate vertices.
+        for (int k = 0; k < V; k++) {
+            // Pick all vertices as source one by one
+            for (int i = 0; i < V; i++) {
+                // Pick all vertices as destination for the above picked source
+                for (int j = 0; j < V; j++) {
+                    // If vertex k is on the shortest path from i to j, then update the value of dist[i][j]
+                    if (dist[i][k] != INF && dist[k][j] != INF && dist[i][k] + dist[k][j] < dist[i][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                    }
+                }
+            }
+        }
+
+        // Check for negative-weight cycles
+        if (checkNegativeCycle(dist)) {
+            System.out.println("Graph contains a negative weight cycle");
+        } else {
+            System.out.println("Graph does not contain a negative weight cycle");
+        }
+
+        // Print the shortest distance matrix
+        printSolution(dist);
+    }
+
+    boolean checkNegativeCycle(int dist[][]) {
+        int V = dist.length;
+        for (int i = 0; i < V; i++) {
+            if (dist[i][i] < 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void printSolution(int dist[][]) {
+        int V = dist.length;
+        System.out.println("The following matrix shows the shortest distances between every pair of vertices:");
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (dist[i][j] == INF) {
+                    System.out.print("INF ");
+                } else {
+                    System.out.print(dist[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+To detect a negative weight cycle using the Floyd-Warshall algorithm, we can modify the algorithm slightly. The idea is that after running the Floyd-Warshall algorithm to compute shortest paths, if there is any negative value in the diagonal of the distance matrix, then there is a negative weight cycle in the graph.
+
+Here's how you can implement this:
+
+```java
+public class FloydWarshallNegativeCycle {
+
+    final static int INF = 99999; // A large number to represent infinity
+
+    public static void main(String[] args) {
+        int graph[][] = {
+            {0, 1, INF, INF},
+            {INF, 0, -1, INF},
+            {INF, INF, 0, -1},
+            {-1, INF, INF, 0}
+        };
+
+        FloydWarshallNegativeCycle a = new FloydWarshallNegativeCycle();
+        a.floydWarshall(graph);
+    }
+
+    void floydWarshall(int graph[][]) {
+        int V = graph.length;
+        int dist[][] = new int[V][V];
+
+        // Initialize the solution matrix same as input graph matrix
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                dist[i][j] = graph[i][j];
+            }
+        }
+
+        // Add all vertices one by one to the set of intermediate vertices.
+        for (int k = 0; k < V; k++) {
+            // Pick all vertices as source one by one
+            for (int i = 0; i < V; i++) {
+                // Pick all vertices as destination for the above picked source
+                for (int j = 0; j < V; j++) {
+                    // If vertex k is on the shortest path from i to j, then update the value of dist[i][j]
+                    if (dist[i][k] != INF && dist[k][j] != INF && dist[i][k] + dist[k][j] < dist[i][j]) {
+                        dist[i][j] = dist[i][k] + dist[k][j];
+                    }
+                }
+            }
+        }
+
+        // Check for negative-weight cycles
+        if (checkNegativeCycle(dist)) {
+            System.out.println("Graph contains a negative weight cycle");
+        } else {
+            System.out.println("Graph does not contain a negative weight cycle");
+        }
+
+        // Print the shortest distance matrix
+        printSolution(dist);
+    }
+
+    boolean checkNegativeCycle(int dist[][]) {
+        int V = dist.length;
+        for (int i = 0; i < V; i++) {
+            if (dist[i][i] < 0) {
+                return true;
+            }
+        }
+        return false;
+    }
+
+    void printSolution(int dist[][]) {
+        int V = dist.length;
+        System.out.println("The following matrix shows the shortest distances between every pair of vertices:");
+        for (int i = 0; i < V; i++) {
+            for (int j = 0; j < V; j++) {
+                if (dist[i][j] == INF) {
+                    System.out.print("INF ");
+                } else {
+                    System.out.print(dist[i][j] + " ");
+                }
+            }
+            System.out.println();
+        }
+    }
+}
+```
+
+### Explanation:
+
+1. **Graph Representation**:
+   - The graph is represented as an adjacency matrix where `graph[i][j]` holds the weight of the edge from vertex `i` to vertex `j`. If there is no edge between the vertices, the weight is set to `INF` (a large number representing infinity).
+
+2. **Initialization**:
+   - The `dist` matrix is initialized to be the same as the input graph matrix. This matrix will be updated to hold the shortest path distances between all pairs of vertices.
+
+3. **Algorithm**:
+   - The algorithm works by considering each vertex as an intermediate point between every pair of vertices. If the path through the intermediate vertex is shorter than the direct path, the `dist` matrix is updated.
+   - This process is repeated for every vertex, ensuring that the shortest path is found for all pairs of vertices.
+
+4. **Check for Negative Cycles**:
+   - After running the Floyd-Warshall algorithm, the diagonal of the `dist` matrix is checked. If any value on the diagonal is negative, it indicates the presence of a negative weight cycle.
+
+5. **Print Solution**:
+   - The `printSolution` method prints the final `dist` matrix, showing the shortest distances between every pair of vertices.
+
+### How to Run the Program:
+
+1. Save the code in a file named `FloydWarshallNegativeCycle.java`.
+2. Compile the Java file:
+   ```bash
+   javac FloydWarshallNegativeCycle.java
+   ```
+3. Run the program:
+   ```bash
+   java FloydWarshallNegativeCycle
+   ```
+
+This will output whether the graph contains a negative weight cycle or not, and will also print the shortest distances between every pair of vertices in the graph. You can modify the `graph` array to test different graphs.

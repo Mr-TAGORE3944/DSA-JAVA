@@ -1,0 +1,161 @@
+class solve {
+    boolean isSafe(int v, boolean graph[][], int color[], int c, int V) {
+        for (int i = 0; i < V; i++)
+            if (graph[v][i] && c == color[i]) return false;
+
+        // returning true if no connected node has same colour.
+        return true;
+    }
+    boolean graphColoringUtil(boolean graph[][], int m, int color[], int v,
+                              int V) {
+        // if all vertices have been assigned colour then we return true.
+        if (v == V) return true;
+
+        for (int c = 1; c <= m; c++) {
+            // checking if this colour can be given to a particular node.
+            if (isSafe(v, graph, color, c, V)) {
+                // assigning colour to the node.
+                color[v] = c;
+
+                // calling function recursively and checking if other nodes
+                // can be assigned other colours.
+                if (graphColoringUtil(graph, m, color, v + 1, V) == true)
+                    // returning true if the current allocation was successful.
+                    return true;
+
+                // if not true, we backtrack and remove the colour for that
+                // node.
+                color[v] = 0;
+            }
+        }
+        // if no colour can be assigned, we return false.
+        return false;
+    }
+    // Function to determine if graph can be coloured with at most M colours
+    // such
+    // that no two adjacent vertices of graph are coloured with same colour.
+    boolean graphColoring(boolean graph[][], int m, int n) {
+        int color[] = new int[n];
+        for (int i = 0; i < n; i++) color[i] = 0;
+
+        // checking if colours can be assigned.
+        if (graphColoringUtil(graph, m, color, 0, n) == false) {
+            return false;
+        }
+
+        return true;
+    }
+}
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+
+The M-Coloring problem is a classic problem in graph theory and computer science, where the goal is to determine if a graph can be colored with `m` colors such that no two adjacent vertices have the same color. This is a special case of the more general graph coloring problem.
+
+### Problem Definition
+Given a graph and a number `m`, the task is to assign one of `m` colors to each vertex of the graph so that no two adjacent vertices share the same color.
+
+### Approach
+A common approach to solving the M-Coloring problem is using backtracking. Here, we try to color each vertex with one of the `m` colors and recursively check if the coloring is valid. If it is not, we backtrack and try the next color.
+
+Here’s a Java implementation of the M-Coloring problem using a backtracking approach:
+
+```java
+public class MColoring {
+
+    public static void main(String[] args) {
+        int V = 4; // Number of vertices
+        int m = 3; // Number of colors
+
+        // Adjacency matrix of the graph
+        int graph[][] = {
+            {0, 1, 1, 1},
+            {1, 0, 1, 0},
+            {1, 1, 0, 1},
+            {1, 0, 1, 0}
+        };
+
+        MColoring mColoring = new MColoring();
+        if (mColoring.graphColoring(graph, m)) {
+            System.out.println("Solution exists with " + m + " colors.");
+        } else {
+            System.out.println("No solution exists with " + m + " colors.");
+        }
+    }
+
+    boolean graphColoring(int graph[][], int m) {
+        int V = graph.length;
+        int[] color = new int[V];
+        return graphColoringUtil(graph, m, color, 0);
+    }
+
+    boolean graphColoringUtil(int graph[][], int m, int[] color, int vertex) {
+        int V = graph.length;
+
+        // If all vertices are assigned a color then return true
+        if (vertex == V) {
+            return true;
+        }
+
+        // Try different colors for the vertex
+        for (int c = 1; c <= m; c++) {
+            // Check if assignment of color c to vertex is possible
+            if (isSafe(graph, color, vertex, c)) {
+                color[vertex] = c;
+
+                // Recur to assign colors to the rest of the vertices
+                if (graphColoringUtil(graph, m, color, vertex + 1)) {
+                    return true;
+                }
+
+                // If assigning color c doesn't lead to a solution then remove it
+                color[vertex] = 0;
+            }
+        }
+        return false;
+    }
+
+    boolean isSafe(int graph[][], int[] color, int vertex, int c) {
+        int V = graph.length;
+        for (int i = 0; i < V; i++) {
+            if (graph[vertex][i] == 1 && color[i] == c) {
+                return false;
+            }
+        }
+        return true;
+    }
+}
+```
+
+### Explanation:
+
+1. **Graph Representation**:
+   - The graph is represented as an adjacency matrix. `graph[i][j]` is `1` if there is an edge between vertex `i` and vertex `j`, and `0` otherwise.
+
+2. **Coloring Function**:
+   - The `graphColoring` function initializes the `color` array and calls the recursive `graphColoringUtil` method.
+
+3. **Backtracking Function**:
+   - The `graphColoringUtil` function tries to assign a color to each vertex and recursively checks if the assignment is valid. If it is not valid, it backtracks and tries the next color.
+
+4. **Safety Check**:
+   - The `isSafe` function checks if assigning a color to a vertex does not violate the coloring condition (i.e., no two adjacent vertices have the same color).
+
+### How to Run the Program:
+
+1. Save the code in a file named `MColoring.java`.
+2. Compile the Java file:
+   ```bash
+   javac MColoring.java
+   ```
+3. Run the program:
+   ```bash
+   java MColoring
+   ```
+
+The program will output whether a valid coloring with `m` colors exists for the given graph. You can modify the graph and the number of colors to test different scenarios.

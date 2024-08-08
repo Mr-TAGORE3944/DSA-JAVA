@@ -1,0 +1,200 @@
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
+
+public class SnakesAndLadders {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+
+        // Define the board with ladders and snakes
+        Map<Integer, Integer> board = new HashMap<>();
+        board.put(2, 38);  // Ladder from 2 to 38
+        board.put(7, 14);  // Ladder from 7 to 14
+        board.put(8, 31);  // Ladder from 8 to 31
+        board.put(15, 26); // Ladder from 15 to 26
+        board.put(16, 6);  // Snake from 16 to 6
+        board.put(21, 42); // Ladder from 21 to 42
+        board.put(28, 84); // Ladder from 28 to 84
+        board.put(36, 44); // Ladder from 36 to 44
+        board.put(46, 25); // Snake from 46 to 25
+        board.put(49, 11); // Snake from 49 to 11
+        board.put(51, 67); // Ladder from 51 to 67
+        board.put(62, 19); // Snake from 62 to 19
+        board.put(64, 60); // Snake from 64 to 60
+        board.put(71, 91); // Ladder from 71 to 91
+        board.put(74, 53); // Snake from 74 to 53
+        board.put(78, 98); // Ladder from 78 to 98
+        board.put(87, 94); // Ladder from 87 to 94
+        board.put(89, 68); // Snake from 89 to 68
+        board.put(92, 88); // Snake from 92 to 88
+        board.put(95, 75); // Snake from 95 to 75
+        board.put(99, 80); // Snake from 99 to 80
+
+        int[] positions = new int[2]; // Positions of two players
+        boolean gameWon = false;
+        int currentPlayer = 0;
+
+        while (!gameWon) {
+            System.out.println("Player " + (currentPlayer + 1) + ", press Enter to roll the dice.");
+            scanner.nextLine();
+            int diceRoll = random.nextInt(6) + 1;
+            System.out.println("Player " + (currentPlayer + 1) + " rolled a " + diceRoll + ".");
+
+            positions[currentPlayer] += diceRoll;
+
+            if (positions[currentPlayer] > 100) {
+                positions[currentPlayer] -= diceRoll;
+                System.out.println("Roll exceeds 100. Stay at position " + positions[currentPlayer] + ".");
+            } else {
+                if (board.containsKey(positions[currentPlayer])) {
+                    int oldPosition = positions[currentPlayer];
+                    positions[currentPlayer] = board.get(positions[currentPlayer]);
+                    if (oldPosition < positions[currentPlayer]) {
+                        System.out.println("Ladder! Climb up from " + oldPosition + " to " + positions[currentPlayer] + ".");
+                    } else {
+                        System.out.println("Snake! Slide down from " + oldPosition + " to " + positions[currentPlayer] + ".");
+                    }
+                }
+
+                System.out.println("Player " + (currentPlayer + 1) + " is now at position " + positions[currentPlayer] + ".");
+
+                if (positions[currentPlayer] == 100) {
+                    System.out.println("Player " + (currentPlayer + 1) + " wins!");
+                    gameWon = true;
+                }
+            }
+
+            currentPlayer = (currentPlayer + 1) % 2; // Switch to the other player
+        }
+
+        scanner.close();
+    }
+}
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+Implementing a Snakes and Ladders game involves simulating the movement of players on a board, handling the effects of snakes and ladders, and determining the winner. Here's a simple Java implementation of the Snakes and Ladders game:
+
+### Snakes and Ladders Game in Java
+
+```java
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Random;
+import java.util.Scanner;
+
+public class SnakesAndLadders {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        Random random = new Random();
+
+        // Define the board with ladders and snakes
+        Map<Integer, Integer> board = new HashMap<>();
+        board.put(2, 38);  // Ladder from 2 to 38
+        board.put(7, 14);  // Ladder from 7 to 14
+        board.put(8, 31);  // Ladder from 8 to 31
+        board.put(15, 26); // Ladder from 15 to 26
+        board.put(16, 6);  // Snake from 16 to 6
+        board.put(21, 42); // Ladder from 21 to 42
+        board.put(28, 84); // Ladder from 28 to 84
+        board.put(36, 44); // Ladder from 36 to 44
+        board.put(46, 25); // Snake from 46 to 25
+        board.put(49, 11); // Snake from 49 to 11
+        board.put(51, 67); // Ladder from 51 to 67
+        board.put(62, 19); // Snake from 62 to 19
+        board.put(64, 60); // Snake from 64 to 60
+        board.put(71, 91); // Ladder from 71 to 91
+        board.put(74, 53); // Snake from 74 to 53
+        board.put(78, 98); // Ladder from 78 to 98
+        board.put(87, 94); // Ladder from 87 to 94
+        board.put(89, 68); // Snake from 89 to 68
+        board.put(92, 88); // Snake from 92 to 88
+        board.put(95, 75); // Snake from 95 to 75
+        board.put(99, 80); // Snake from 99 to 80
+
+        int[] positions = new int[2]; // Positions of two players
+        boolean gameWon = false;
+        int currentPlayer = 0;
+
+        while (!gameWon) {
+            System.out.println("Player " + (currentPlayer + 1) + ", press Enter to roll the dice.");
+            scanner.nextLine();
+            int diceRoll = random.nextInt(6) + 1;
+            System.out.println("Player " + (currentPlayer + 1) + " rolled a " + diceRoll + ".");
+
+            positions[currentPlayer] += diceRoll;
+
+            if (positions[currentPlayer] > 100) {
+                positions[currentPlayer] -= diceRoll;
+                System.out.println("Roll exceeds 100. Stay at position " + positions[currentPlayer] + ".");
+            } else {
+                if (board.containsKey(positions[currentPlayer])) {
+                    int oldPosition = positions[currentPlayer];
+                    positions[currentPlayer] = board.get(positions[currentPlayer]);
+                    if (oldPosition < positions[currentPlayer]) {
+                        System.out.println("Ladder! Climb up from " + oldPosition + " to " + positions[currentPlayer] + ".");
+                    } else {
+                        System.out.println("Snake! Slide down from " + oldPosition + " to " + positions[currentPlayer] + ".");
+                    }
+                }
+
+                System.out.println("Player " + (currentPlayer + 1) + " is now at position " + positions[currentPlayer] + ".");
+
+                if (positions[currentPlayer] == 100) {
+                    System.out.println("Player " + (currentPlayer + 1) + " wins!");
+                    gameWon = true;
+                }
+            }
+
+            currentPlayer = (currentPlayer + 1) % 2; // Switch to the other player
+        }
+
+        scanner.close();
+    }
+}
+```
+
+### Explanation:
+
+1. **Board Representation**:
+   - The board is represented using a `Map<Integer, Integer>` where the key is the start of a snake or ladder, and the value is the end of the snake or ladder.
+
+2. **Game Loop**:
+   - The game loop continues until a player wins by reaching position 100.
+   - Each player rolls a die to move forward.
+   - If a player's position after the roll exceeds 100, the player stays at the same position.
+   - If a player lands on a snake or ladder, their position is updated accordingly.
+   - The game checks if a player has won after each roll.
+
+3. **Player Turns**:
+   - The game alternates between two players.
+
+4. **Random Dice Roll**:
+   - The dice roll is simulated using `Random.nextInt(6) + 1`, which generates a number between 1 and 6.
+
+### How to Run the Program:
+
+1. Save the code in a file named `SnakesAndLadders.java`.
+2. Compile the Java file:
+   ```bash
+   javac SnakesAndLadders.java
+   ```
+3. Run the program:
+   ```bash
+   java SnakesAndLadders
+   ```
+
+This will start the Snakes and Ladders game, where two players take turns rolling the dice and moving on the board, encountering snakes and ladders until one of them reaches the end.
+
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////
+

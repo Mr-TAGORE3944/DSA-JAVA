@@ -1,0 +1,159 @@
+import java.util.Arrays;
+
+public class NegativeWeightCycle {
+
+    public static void main(String[] args) {
+        int V = 5; // Number of vertices in the graph
+        int E = 8; // Number of edges in the graph
+
+        // Each edge is represented as {source, destination, weight}
+        int[][] edges = {
+            {0, 1, -1},
+            {0, 2, 4},
+            {1, 2, 3},
+            {1, 3, 2},
+            {1, 4, 2},
+            {3, 2, 5},
+            {3, 1, 1},
+            {4, 3, -3}
+        };
+
+        NegativeWeightCycle graph = new NegativeWeightCycle();
+        if (graph.detectNegativeWeightCycle(V, E, edges)) {
+            System.out.println("Graph contains a negative weight cycle");
+        } else {
+            System.out.println("Graph does not contain a negative weight cycle");
+        }
+    }
+
+    public boolean detectNegativeWeightCycle(int V, int E, int[][] edges) {
+        // Initialize distance to all vertices as infinite and distance to source as 0
+        int[] dist = new int[V];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[0] = 0;
+
+        // Relax all edges |V| - 1 times
+        for (int i = 1; i < V; i++) {
+            for (int j = 0; j < E; j++) {
+                int u = edges[j][0];
+                int v = edges[j][1];
+                int weight = edges[j][2];
+                if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) {
+                    dist[v] = dist[u] + weight;
+                }
+            }
+        }
+
+        // Check for negative-weight cycles by checking one more time
+        for (int j = 0; j < E; j++) {
+            int u = edges[j][0];
+            int v = edges[j][1];
+            int weight = edges[j][2];
+            if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) {
+                return true; // Negative weight cycle found
+            }
+        }
+
+        return false; // No negative weight cycle found
+    }
+}
+
+
+
+
+/////////////////////////////////////////////////////////////////////////////////
+Detecting a negative weight cycle in a graph is a common problem in graph theory, and it can be solved using the Bellman-Ford algorithm. The Bellman-Ford algorithm is particularly useful for graphs with negative weights and can help in detecting if such a cycle exists.
+
+### Bellman-Ford Algorithm for Negative Weight Cycle Detection
+
+Here's a Java implementation of the Bellman-Ford algorithm to detect a negative weight cycle:
+
+```java
+import java.util.Arrays;
+
+public class NegativeWeightCycle {
+
+    public static void main(String[] args) {
+        int V = 5; // Number of vertices in the graph
+        int E = 8; // Number of edges in the graph
+
+        // Each edge is represented as {source, destination, weight}
+        int[][] edges = {
+            {0, 1, -1},
+            {0, 2, 4},
+            {1, 2, 3},
+            {1, 3, 2},
+            {1, 4, 2},
+            {3, 2, 5},
+            {3, 1, 1},
+            {4, 3, -3}
+        };
+
+        NegativeWeightCycle graph = new NegativeWeightCycle();
+        if (graph.detectNegativeWeightCycle(V, E, edges)) {
+            System.out.println("Graph contains a negative weight cycle");
+        } else {
+            System.out.println("Graph does not contain a negative weight cycle");
+        }
+    }
+
+    public boolean detectNegativeWeightCycle(int V, int E, int[][] edges) {
+        // Initialize distance to all vertices as infinite and distance to source as 0
+        int[] dist = new int[V];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[0] = 0;
+
+        // Relax all edges |V| - 1 times
+        for (int i = 1; i < V; i++) {
+            for (int j = 0; j < E; j++) {
+                int u = edges[j][0];
+                int v = edges[j][1];
+                int weight = edges[j][2];
+                if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) {
+                    dist[v] = dist[u] + weight;
+                }
+            }
+        }
+
+        // Check for negative-weight cycles by checking one more time
+        for (int j = 0; j < E; j++) {
+            int u = edges[j][0];
+            int v = edges[j][1];
+            int weight = edges[j][2];
+            if (dist[u] != Integer.MAX_VALUE && dist[u] + weight < dist[v]) {
+                return true; // Negative weight cycle found
+            }
+        }
+
+        return false; // No negative weight cycle found
+    }
+}
+```
+
+### Explanation:
+
+1. **Graph Representation**:
+   - The graph is represented using an edge list. Each edge is an array of three integers: `[source, destination, weight]`.
+
+2. **Initialization**:
+   - The `dist` array is initialized to `Integer.MAX_VALUE` for all vertices except the source vertex, which is initialized to `0`.
+
+3. **Relaxation**:
+   - Each edge is relaxed (i.e., the distance to the destination vertex is updated) `|V| - 1` times, where `|V|` is the number of vertices. This is done to ensure that the shortest path from the source to any other vertex is found.
+
+4. **Negative Cycle Check**:
+   - After `|V| - 1` relaxations, one more iteration over all edges is performed. If any distance can still be updated, it indicates the presence of a negative weight cycle.
+
+### How to Run the Program:
+
+1. Save the code in a file named `NegativeWeightCycle.java`.
+2. Compile the Java file:
+   ```bash
+   javac NegativeWeightCycle.java
+   ```
+3. Run the program:
+   ```bash
+   java NegativeWeightCycle
+   ```
+
+This will output whether the graph contains a negative weight cycle or not. You can modify the `edges` array to test different graphs.

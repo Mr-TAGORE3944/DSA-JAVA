@@ -1,0 +1,197 @@
+// Java Program to print Vertex
+// Cover of a given undirected graph
+import java.io.*;
+import java.util.*;
+import java.util.LinkedList;
+
+// This class represents an undirected 
+// graph using adjacency list
+class Graph
+{
+    private int V;   // No. of vertices
+
+    // Array  of lists for Adjacency List Representation
+    private LinkedList<Integer> adj[];
+
+    // Constructor
+    Graph(int v)
+    {
+        V = v;
+        adj = new LinkedList[v];
+        for (int i=0; i<v; ++i)
+            adj[i] = new LinkedList();
+    }
+
+    //Function to add an edge into the graph
+    void addEdge(int v, int w)
+    {
+        adj[v].add(w);  // Add w to v's list.
+        adj[w].add(v);  //Graph is undirected
+    }
+
+    // The function to print vertex cover
+    void printVertexCover()
+    {
+        // Initialize all vertices as not visited.
+        boolean visited[] = new boolean[V];
+        for (int i=0; i<V; i++)
+            visited[i] = false;
+
+        Iterator<Integer> i;
+
+        // Consider all edges one by one
+        for (int u=0; u<V; u++)
+        {
+            // An edge is only picked when both visited[u]
+            // and visited[v] are false
+            if (visited[u] == false)
+            {
+                // Go through all adjacents of u and pick the
+                // first not yet visited vertex (We are basically
+                //  picking an edge (u, v) from remaining edges.
+                i = adj[u].iterator();
+                while (i.hasNext())
+                {
+                    int v = i.next();
+                    if (visited[v] == false)
+                    {
+                         // Add the vertices (u, v) to the result
+                         // set. We make the vertex u and v visited
+                         // so that all edges from/to them would
+                         // be ignored
+                         visited[v] = true;
+                         visited[u]  = true;
+                         break;
+                    }
+                }
+            }
+        }
+
+        // Print the vertex cover
+        for (int j=0; j<V; j++)
+            if (visited[j])
+              System.out.print(j+" ");
+    }
+
+    // Driver method
+    public static void main(String args[])
+    {
+        // Create a graph given in the above diagram
+        Graph g = new Graph(7);
+        g.addEdge(0, 1);
+        g.addEdge(0, 2);
+        g.addEdge(1, 3);
+        g.addEdge(3, 4);
+        g.addEdge(4, 5);
+        g.addEdge(5, 6);
+
+        g.printVertexCover();
+    }
+}
+
+// This code is contributed by Aakash Hasija
+
+
+
+
+///////////////////////////////////////////////////////////////////////////////////////
+
+
+
+
+The Vertex Cover problem is a classic problem in computer science and graph theory. A vertex cover of a graph is a set of vertices such that every edge in the graph is incident to at least one vertex in the set. The problem can be formalized as finding the smallest set of vertices that covers all edges in the graph.
+
+Finding the minimum vertex cover is an NP-hard problem, which means that no known polynomial-time algorithm can solve all instances of the problem. However, for small graphs or special cases, we can use a brute-force approach or backtracking.
+
+### Vertex Cover using Backtracking
+
+Here’s a Java implementation of the vertex cover problem using a backtracking approach:
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+
+public class VertexCover {
+
+    public static void main(String[] args) {
+        int V = 6; // Number of vertices
+        List<List<Integer>> graph = new ArrayList<>();
+
+        for (int i = 0; i < V; i++) {
+            graph.add(new ArrayList<>());
+        }
+
+        // Define edges of the graph
+        addEdge(graph, 0, 1);
+        addEdge(graph, 0, 2);
+        addEdge(graph, 1, 2);
+        addEdge(graph, 1, 3);
+        addEdge(graph, 3, 4);
+        addEdge(graph, 4, 5);
+
+        System.out.println("Minimum Vertex Cover: " + vertexCover(graph, V));
+    }
+
+    static void addEdge(List<List<Integer>> graph, int u, int v) {
+        graph.get(u).add(v);
+        graph.get(v).add(u);
+    }
+
+    static int vertexCover(List<List<Integer>> graph, int V) {
+        boolean[] visited = new boolean[V];
+        return vertexCoverUtil(graph, visited, 0, 0);
+    }
+
+    static int vertexCoverUtil(List<List<Integer>> graph, boolean[] visited, int start, int count) {
+        if (start == graph.size()) {
+            return count;
+        }
+
+        // If the vertex is already visited, skip it
+        if (visited[start]) {
+            return vertexCoverUtil(graph, visited, start + 1, count);
+        }
+
+        // Option 1: Exclude the vertex
+        boolean[] excludeVisited = visited.clone();
+        int excludeCount = vertexCoverUtil(graph, excludeVisited, start + 1, count);
+
+        // Option 2: Include the vertex
+        boolean[] includeVisited = visited.clone();
+        includeVisited[start] = true;
+        for (int neighbor : graph.get(start)) {
+            includeVisited[neighbor] = true;
+        }
+        int includeCount = vertexCoverUtil(graph, includeVisited, start + 1, count + 1);
+
+        // Return the minimum of the two options
+        return Math.min(excludeCount, includeCount);
+    }
+}
+```
+
+### Explanation:
+
+1. **Graph Representation**:
+   - The graph is represented as an adjacency list using a list of lists.
+   
+2. **Graph Construction**:
+   - The `addEdge` method is used to add edges to the graph.
+
+3. **Vertex Cover Calculation**:
+   - The `vertexCover` method initializes the `visited` array and calls the `vertexCoverUtil` method to compute the minimum vertex cover.
+   - The `vertexCoverUtil` method is a recursive method that tries to include or exclude each vertex in the vertex cover and returns the minimum vertex cover size.
+
+### How to Run the Program:
+
+1. Save the code in a file named `VertexCover.java`.
+2. Compile the Java file:
+   ```bash
+   javac VertexCover.java
+   ```
+3. Run the program:
+   ```bash
+   java VertexCover
+   ```
+
+This implementation uses a backtracking approach to try all possible combinations of including and excluding vertices to find the minimum vertex cover. Due to its exponential time complexity, this method is practical only for small graphs. For larger graphs, approximation algorithms or heuristics may be used.

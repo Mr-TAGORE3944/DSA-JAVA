@@ -1,0 +1,170 @@
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class JourneyToTheMoon {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        int n = scanner.nextInt(); // number of astronauts
+        int p = scanner.nextInt(); // number of pairs
+        
+        List<List<Integer>> adjList = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            adjList.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < p; i++) {
+            int u = scanner.nextInt();
+            int v = scanner.nextInt();
+            adjList.get(u).add(v);
+            adjList.get(v).add(u);
+        }
+
+        boolean[] visited = new boolean[n];
+        List<Integer> countrySizes = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                int size = dfs(i, adjList, visited);
+                countrySizes.add(size);
+            }
+        }
+
+        long totalPairs = (long) n * (n - 1) / 2; // Total ways to pick 2 out of n
+        long sameCountryPairs = 0;
+
+        for (int size : countrySizes) {
+            sameCountryPairs += (long) size * (size - 1) / 2;
+        }
+
+        long differentCountryPairs = totalPairs - sameCountryPairs;
+
+        System.out.println(differentCountryPairs);
+    }
+
+    private static int dfs(int node, List<List<Integer>> adjList, boolean[] visited) {
+        visited[node] = true;
+        int size = 1;
+
+        for (int neighbor : adjList.get(node)) {
+            if (!visited[neighbor]) {
+                size += dfs(neighbor, adjList, visited);
+            }
+        }
+
+        return size;
+    }
+}
+
+
+
+
+////////////////////////////////////////////////////////////////////////////////////////
+
+
+
+"Journey to the Moon" is a problem from HackerRank that involves finding the number of ways to choose a pair of astronauts from different countries. This can be seen as a graph problem where each astronaut is a node, and each pair of astronauts from the same country forms an edge. The task is to find all connected components (each representing a country) and then compute the number of valid pairs.
+
+### Problem Explanation
+1. We are given `n` astronauts.
+2. We are also given pairs of astronauts that belong to the same country.
+3. The task is to count the number of ways to choose two astronauts such that they belong to different countries.
+
+### Steps to Solve the Problem
+1. **Graph Representation**: Represent the astronauts and their pairs as an undirected graph.
+2. **Connected Components**: Use Depth-First Search (DFS) or Breadth-First Search (BFS) to find all connected components in the graph. Each connected component represents a country.
+3. **Count Pairs**: Calculate the number of ways to choose pairs of astronauts from different countries based on the sizes of these connected components.
+
+Here’s a Java implementation to solve the problem:
+
+```java
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Scanner;
+
+public class JourneyToTheMoon {
+
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+        
+        int n = scanner.nextInt(); // number of astronauts
+        int p = scanner.nextInt(); // number of pairs
+        
+        List<List<Integer>> adjList = new ArrayList<>();
+        for (int i = 0; i < n; i++) {
+            adjList.add(new ArrayList<>());
+        }
+
+        for (int i = 0; i < p; i++) {
+            int u = scanner.nextInt();
+            int v = scanner.nextInt();
+            adjList.get(u).add(v);
+            adjList.get(v).add(u);
+        }
+
+        boolean[] visited = new boolean[n];
+        List<Integer> countrySizes = new ArrayList<>();
+
+        for (int i = 0; i < n; i++) {
+            if (!visited[i]) {
+                int size = dfs(i, adjList, visited);
+                countrySizes.add(size);
+            }
+        }
+
+        long totalPairs = (long) n * (n - 1) / 2; // Total ways to pick 2 out of n
+        long sameCountryPairs = 0;
+
+        for (int size : countrySizes) {
+            sameCountryPairs += (long) size * (size - 1) / 2;
+        }
+
+        long differentCountryPairs = totalPairs - sameCountryPairs;
+
+        System.out.println(differentCountryPairs);
+    }
+
+    private static int dfs(int node, List<List<Integer>> adjList, boolean[] visited) {
+        visited[node] = true;
+        int size = 1;
+
+        for (int neighbor : adjList.get(node)) {
+            if (!visited[neighbor]) {
+                size += dfs(neighbor, adjList, visited);
+            }
+        }
+
+        return size;
+    }
+}
+```
+
+### Explanation:
+1. **Input Reading**:
+   - Read the number of astronauts `n` and the number of pairs `p`.
+   - Create an adjacency list to represent the graph.
+
+2. **Graph Construction**:
+   - For each pair, add an edge in the adjacency list.
+
+3. **Connected Components**:
+   - Use a DFS to find the size of each connected component. Each component's size is stored in a list `countrySizes`.
+
+4. **Counting Pairs**:
+   - Calculate the total number of ways to choose two astronauts out of `n` (which is \( \frac{n \times (n - 1)}{2} \)).
+   - Calculate the number of pairs within the same country for each component and subtract this from the total pairs to get the number of valid pairs.
+
+### How to Run the Program:
+1. Save the code in a file named `JourneyToTheMoon.java`.
+2. Compile the Java file:
+   ```bash
+   javac JourneyToTheMoon.java
+   ```
+3. Run the program:
+   ```bash
+   java JourneyToTheMoon
+   ```
+
+You can provide the input as described in the problem statement, and the program will output the number of valid pairs of astronauts from different countries.
