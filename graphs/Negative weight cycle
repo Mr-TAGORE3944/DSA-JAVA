@@ -61,14 +61,14 @@ public class NegativeWeightCycle {
 
 
 
-/////////////////////////////////////////////////////////////////////////////////
-Detecting a negative weight cycle in a graph is a common problem in graph theory, and it can be solved using the Bellman-Ford algorithm. The Bellman-Ford algorithm is particularly useful for graphs with negative weights and can help in detecting if such a cycle exists.
+// /////////////////////////////////////////////////////////////////////////////////
+// Detecting a negative weight cycle in a graph is a common problem in graph theory, and it can be solved using the Bellman-Ford algorithm. The Bellman-Ford algorithm is particularly useful for graphs with negative weights and can help in detecting if such a cycle exists.
 
-### Bellman-Ford Algorithm for Negative Weight Cycle Detection
+// ### Bellman-Ford Algorithm for Negative Weight Cycle Detection
 
-Here's a Java implementation of the Bellman-Ford algorithm to detect a negative weight cycle:
+// Here's a Java implementation of the Bellman-Ford algorithm to detect a negative weight cycle:
 
-```java
+// ```java
 import java.util.Arrays;
 
 public class NegativeWeightCycle {
