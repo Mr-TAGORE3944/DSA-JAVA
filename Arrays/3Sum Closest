@@ -1,0 +1,41 @@
+import java.util.Arrays;
+
+public class ThreeSumClosest {
+    public int threeSumClosest(int[] nums, int target) {
+        Arrays.sort(nums);  // Sort the array
+        int closestSum = nums[0] + nums[1] + nums[2];  // Initialize with the first possible sum
+        
+        for (int i = 0; i < nums.length - 2; i++) {
+            int left = i + 1;
+            int right = nums.length - 1;
+            
+            while (left < right) {
+                int currentSum = nums[i] + nums[left] + nums[right];
+                
+                // Check if the current sum is closer to the target than the closest sum found so far
+                if (Math.abs(currentSum - target) < Math.abs(closestSum - target)) {
+                    closestSum = currentSum;
+                }
+                
+                if (currentSum < target) {
+                    left++;  // Move left pointer to increase the sum
+                } else if (currentSum > target) {
+                    right--;  // Move right pointer to decrease the sum
+                } else {
+                    return currentSum;  // Found a sum exactly equal to the target
+                }
+            }
+        }
+        
+        return closestSum;  // Return the closest sum found
+    }
+
+    public static void main(String[] args) {
+        ThreeSumClosest tsc = new ThreeSumClosest();
+        int[] nums = {-1, 2, 1, -4};
+        int target = 1;
+        int result = tsc.threeSumClosest(nums, target);
+        
+        System.out.println("The sum closest to " + target + " is " + result);
+    }
+}

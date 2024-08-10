@@ -1,0 +1,27 @@
+import java.util.Arrays;
+
+public class Solution {
+    public void wiggleSort(int[] nums) {
+        int[] sorted = nums.clone();
+        Arrays.sort(sorted);
+        int n = nums.length;
+        
+        int mid = (n - 1) / 2;  // Middle index for the smaller half
+        int end = n - 1;        // Last index for the larger half
+        
+        // Fill the array from back to front
+        for (int i = 0; i < n; i++) {
+            if (i % 2 == 0) {
+                nums[i] = sorted[mid--];  // Fill even index with smaller half
+            } else {
+                nums[i] = sorted[end--];  // Fill odd index with larger half
+            }
+        }
+    }
+
+    public static void main(String[] args) {
+        int[] nums = {1, 5, 1, 1, 6, 4};
+        new Solution().wiggleSort(nums);
+        System.out.println("Wiggle Sorted Array: " + Arrays.toString(nums));
+    }
+}

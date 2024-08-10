@@ -33,7 +33,7 @@ public class L_44_problem_Q3 {
     static void ThreePointerSort(int[] arr){
         int n = arr.length;
         int st = 0 , mid = 0 , end = n-1;
-        while (mid < end) {
+        while (mid <= end) {
             if(arr[mid] == 0){
                 swap(arr , st , mid);
                 mid++;

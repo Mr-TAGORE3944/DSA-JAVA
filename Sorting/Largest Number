@@ -1,0 +1,43 @@
+import java.util.PriorityQueue;
+import java.util.Comparator;
+
+public class Solution {
+    public static class NumComparator implements Comparator<String> {
+        @Override
+        public int compare(String a, String b) {
+            String order1 = a + b;
+            String order2 = b + a;
+            return order2.compareTo(order1); // Reverse order to get the largest number
+        }
+    }
+
+    public String largestNumber(int[] nums) {
+        // Convert the numbers to strings
+        String[] numStrs = new String[nums.length];
+        for (int i = 0; i < nums.length; i++) {
+            numStrs[i] = String.valueOf(nums[i]);
+        }
+
+        // Use a PriorityQueue with a custom comparator
+        PriorityQueue<String> pq = new PriorityQueue<>(new NumComparator());
+        for (String numStr : numStrs) {
+            pq.add(numStr);
+        }
+
+        // Build the largest number by polling from the priority queue
+        StringBuilder sb = new StringBuilder();
+        while (!pq.isEmpty()) {
+            sb.append(pq.poll());
+        }
+
+        // Handle the edge case where the number is 0 (e.g., [0, 0])
+        String result = sb.toString();
+        return result.startsWith("0") ? "0" : result;
+    }
+
+    public static void main(String[] args) {
+        Solution solution = new Solution();
+        int[] nums = {3, 30, 34, 5, 9};
+        System.out.println(solution.largestNumber(nums)); // Output: "9534330"
+    }
+}

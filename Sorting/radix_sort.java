@@ -1,5 +1,7 @@
 package Sorting;
 
+import java.util.PriorityQueue;
+
 public class radix_sort {
 
     
@@ -27,6 +29,31 @@ public class radix_sort {
         for(int i = 0 ; i < output.length ; i++){
             arr[i] = output[i];
         }
+    }
+    public static class Short implements Comparable<Short>{
+        int i;
+        Short(int i){
+            this.i = i;
+        }
+        @Override
+        public int compareTo(Short o) {
+           return o.i%10 - this.i%10;
+        }
+    }
+
+    public static void print(){
+        PriorityQueue<Short> pq = new PriorityQueue<>();
+        pq.add(new Short(9));
+        pq.add(new Short(5));
+        pq.add(new Short(30));
+        pq.add(new Short(34));
+        pq.add(new Short(10));
+        pq.add(new Short(2));
+System.out.println();
+        while (!pq.isEmpty()) {
+            System.out.print(pq.poll().i + " ");
+        }
+        
     }
 
 
@@ -65,6 +92,7 @@ public class radix_sort {
 
         RadixSort(arr);
         displayArray(arr);
+        print();
         
     }
 }
