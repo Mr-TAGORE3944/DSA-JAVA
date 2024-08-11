@@ -1,0 +1,44 @@
+public class MultiplyStrings {
+    public static String multiply(String num1, String num2) {
+        // Edge case: if one of the strings is "0", the result is "0"
+        if (num1.equals("0") || num2.equals("0")) {
+            return "0";
+        }
+
+        int m = num1.length();
+        int n = num2.length();
+        int[] result = new int[m + n];
+
+        // Reverse both strings to facilitate multiplication
+        for (int i = m - 1; i >= 0; i--) {
+            for (int j = n - 1; j >= 0; j--) {
+                int mul = (num1.charAt(i) - '0') * (num2.charAt(j) - '0');
+                int p1 = i + j;
+                int p2 = i + j + 1;
+                int sum = mul + result[p2];
+
+                // Store the result in the appropriate positions
+                result[p1] += sum / 10;
+                result[p2] = sum % 10;
+            }
+        }
+
+        // Convert the result array to a string, skipping leading zeros
+        StringBuilder sb = new StringBuilder();
+        for (int num : result) {
+            if (!(sb.length() == 0 && num == 0)) {
+                sb.append(num);
+            }
+        }
+
+        return sb.toString();
+    }
+
+    public static void main(String[] args) {
+        // Test cases
+        System.out.println(multiply("123", "456"));  // Output: "56088"
+        System.out.println(multiply("0", "456"));    // Output: "0"
+        System.out.println(multiply("999", "999"));  // Output: "998001"
+        System.out.println(multiply("12345", "6789"));// Output: "83810205"
+    }
+}

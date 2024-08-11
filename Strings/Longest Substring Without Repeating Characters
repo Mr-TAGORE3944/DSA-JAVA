@@ -1,0 +1,32 @@
+import java.util.HashSet;
+
+public class LongestSubstringWithoutRepeating {
+    public static int lengthOfLongestSubstring(String s) {
+        // HashSet to store characters in current window
+        HashSet<Character> set = new HashSet<>();
+        int left = 0; // Left pointer of the window
+        int right = 0; // Right pointer of the window
+        int maxLength = 0; // Maximum length of substring found
+
+        // Expand the window with the right pointer
+        while (right < s.length()) {
+            // If character at 'right' is not in set, add it and move the right pointer
+            if (!set.contains(s.charAt(right))) {
+                set.add(s.charAt(right));
+                right++;
+                maxLength = Math.max(maxLength, right - left);
+            } else {
+                // If character is in set, remove the character at 'left' and move the left pointer
+                set.remove(s.charAt(left));
+                left++;
+            }
+        }
+
+        return maxLength;
+    }
+
+    public static void main(String[] args) {
+        String s = "abcabcbb";
+        System.out.println("Length of the longest substring without repeating characters: " + lengthOfLongestSubstring(s));
+    }
+}

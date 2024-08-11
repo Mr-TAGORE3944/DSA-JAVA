@@ -1,0 +1,55 @@
+public class Atoi {
+    public static int myAtoi(String str) {
+        // Step 1: Check if the string is empty or null
+        if (str == null || str.length() == 0) {
+            return 0;
+        }
+
+        // Step 2: Trim whitespace from the string
+        str = str.trim();
+
+        // Step 3: Initialize variables
+        int i = 0;
+        int sign = 1; // to handle negative numbers
+        int result = 0;
+        
+        // Step 4: Check for sign (+/-)
+        if (i < str.length() && (str.charAt(i) == '+' || str.charAt(i) == '-')) {
+            sign = str.charAt(i) == '-' ? -1 : 1;
+            i++;
+        }
+
+        // Step 5: Convert characters to digits and build the integer
+        while (i < str.length()) {
+            char c = str.charAt(i);
+
+            // If the character is not a digit, break the loop
+            if (c < '0' || c > '9') {
+                break;
+            }
+
+            // Check for overflow/underflow before adding the digit
+            if (result > Integer.MAX_VALUE / 10 || 
+               (result == Integer.MAX_VALUE / 10 && (c - '0') > Integer.MAX_VALUE % 10)) {
+                return sign == 1 ? Integer.MAX_VALUE : Integer.MIN_VALUE;
+            }
+
+            // Add the digit to the result
+            result = result * 10 + (c - '0');
+            i++;
+        }
+
+        // Step 6: Return the result with the correct sign
+        return result * sign;
+    }
+
+    public static void main(String[] args) {
+        // Test cases
+        System.out.println(myAtoi("42"));           // 42
+        System.out.println(myAtoi("   -42"));       // -42
+        System.out.println(myAtoi("4193 with words")); // 4193
+        System.out.println(myAtoi("words and 987"));   // 0
+        System.out.println(myAtoi("-91283472332")); // -2147483648 (Integer.MIN_VALUE)
+        System.out.println(myAtoi("2147483648"));   // 2147483647 (Integer.MAX_VALUE)
+    }
+}
