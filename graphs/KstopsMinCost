@@ -1,0 +1,127 @@
+class Solution {
+    public class Edge{
+        int src;
+        int dest;
+        int cost;
+        Edge(int src , int dest , int cost){
+            this.src = src;
+            this.dest = dest;
+            this.cost = cost;
+        }
+    }
+    public class Info {
+        int src;
+        int cost;
+        int stops;
+        Info(int src , int cost , int stops){
+            this.src = src;
+            this.cost = cost;
+            this.stops = stops;
+        }
+    }
+
+    public void createGraph(int[][] f ,ArrayList<Edge> graph[] ){
+        for(int i = 0 ; i < graph.length;i++){
+            graph[i] = new ArrayList<>();
+        }
+        for(int i = 0 ; i < graph.length; i++){
+            graph[f[i][0]].add(new Edge(f[i][0] , f[i][1] , f[i][2]));
+        }
+    }
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+        ArrayList<Edge> graph[] = new ArrayList[n];
+        createGraph(flights , graph);
+
+        int[] dist = new int[n];
+        for(int i = 0 ; i < n ; i++){
+            if(i != src) dist[i] = Integer.MAX_VALUE;
+        }
+        Queue<Info> q = new LinkedList<>();
+        q.add(new Info(src,0,0));
+        while(!q.isEmpty()){
+            Info curr = q.poll();
+            if( curr.stops > k) break;
+            for(int i = 0 ; i < graph[curr.src].size() ; i++){
+                Edge e = graph[curr.src].get(i);
+                int u = e.src;
+                int v = e.dest;
+                //Relaxation point
+                if(curr.cost + e.cost < dist[v] && curr.stops <= k ){
+                    dist[v] = curr.cost + e.cost;
+                    q.add(new Info(v , dist[v] , curr.stops+1));
+                }
+            }
+        }
+        if(dist[dst] == Integer.MAX_VALUE) return -1;
+        return dist[dst];
+    }
+}
+
+
+/////////////////////////////////////////////////////////////////////////////
+
+
+import java.util.*;
+
+class Solution {
+    public class Edge{
+        int src;
+        int dest;
+        int cost;
+        Edge(int src, int dest, int cost){
+            this.src = src;
+            this.dest = dest;
+            this.cost = cost;
+        }
+    }
+
+    public class Info{
+        int v;
+        int cost;
+        int stops;
+        Info(int v, int cost, int stops){
+            this.v = v;
+            this.cost = cost;
+            this.stops = stops;
+        }
+    }
+
+    public void createGraph(int[][] flights, ArrayList<Edge>[] graph){
+        for(int i = 0; i < graph.length; i++){
+            graph[i] = new ArrayList<>();
+        }
+        for(int i = 0; i < flights.length; i++){
+            graph[flights[i][0]].add(new Edge(flights[i][0], flights[i][1], flights[i][2]));
+        }
+    }
+
+    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int k) {
+        ArrayList<Edge>[] graph = new ArrayList[n];
+        createGraph(flights, graph);
+
+        int[] dist = new int[n];
+        Arrays.fill(dist, Integer.MAX_VALUE);
+        dist[src] = 0;
+
+        Queue<Info> q = new LinkedList<>();
+        q.add(new Info(src, 0, 0));
+
+        while(!q.isEmpty()){
+            Info curr = q.poll();
+
+            if(curr.stops > k) continue;  // Skip nodes that exceed k stops
+
+            for(Edge e : graph[curr.v]){
+                int v = e.dest;
+                int newCost = curr.cost + e.cost;
+
+                if(newCost < dist[v]){
+                    dist[v] = newCost;
+                    q.add(new Info(v, newCost, curr.stops + 1));
+                }
+            }
+        }
+
+        return dist[dst] == Integer.MAX_VALUE ? -1 : dist[dst];
+    }
+}
