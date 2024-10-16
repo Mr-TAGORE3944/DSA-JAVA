@@ -17,7 +17,7 @@ public class PermutationsII {
         }
 
         for (int i = 0; i < nums.length; i++) {
-            // Skip duplicates
+            // Skip duplicates: the condition has been modified here
             if (i > 0 && nums[i] == nums[i - 1] && !used[i - 1]) {
                 continue;
             }

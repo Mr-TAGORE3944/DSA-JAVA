@@ -16,7 +16,7 @@ public class Frequency_array {
         
         Scanner sc = new Scanner(System.in);
         int[] a = {1,5,2,66,7,9,22,3,5,78,1000,8,6,9,53,101,102};
-        System.err.println("Enter the number you want: ");
+        System.out.println("Enter the number you want: ");
         int k = sc.nextInt();
 
         int[] freq = findNumber(a);
