@@ -89,3 +89,24 @@ public class BSTBalancer {
         bstBalancer.printInOrder(balancedRoot);
     }
 }
+
+
+
+
+/*
+ * 
+ * const express = require("express");// type regular
+ * 
+ * from express import express ;// type modular
+ * 
+ * 
+ * 
+ * const app = express();
+ * 
+ * app.get("/" , (req , res)=>{
+ *      res.send(JSON.stringfy(req.message( data: {"Successful"}))
+ * });
+ * 
+ * 
+ * 
+ */
