@@ -33,12 +33,12 @@ public class ValidPalindrome {
 
     public static void main(String[] args) {
         ValidPalindrome solution = new ValidPalindrome();
-        
+
         // Test cases
         String test1 = "A man, a plan, a canal: Panama";
         System.out.println("Is palindrome: " + solution.isPalindrome(test1)); // true
 
-        String test2 = "race a car";
+        String test2 = "race a ecar";
         System.out.println("Is palindrome: " + solution.isPalindrome(test2)); // false
     }
 }

@@ -29,9 +29,9 @@ public class WordSearch {
 
         // Explore all possible directions (up, down, left, right)
         boolean found = dfs(board, word, i - 1, j, index + 1) || // Up
-                        dfs(board, word, i + 1, j, index + 1) || // Down
-                        dfs(board, word, i, j - 1, index + 1) || // Left
-                        dfs(board, word, i, j + 1, index + 1);   // Right
+                dfs(board, word, i + 1, j, index + 1) || // Down
+                dfs(board, word, i, j - 1, index + 1) || // Left
+                dfs(board, word, i, j + 1, index + 1); // Right
 
         // Backtrack: unmark the current cell
         board[i][j] = temp;
@@ -43,12 +43,12 @@ public class WordSearch {
         WordSearch ws = new WordSearch();
 
         char[][] board1 = {
-            {'A','B','C','E'},
-            {'S','F','C','S'},
-            {'A','D','E','E'}
+                { 'A', 'B', 'C', 'E' },
+                { 'S', 'F', 'C', 'S' },
+                { 'A', 'D', 'E', 'E' }
         };
         System.out.println(ws.exist(board1, "ABCCED")); // Output: true
-        System.out.println(ws.exist(board1, "SEE"));    // Output: true
-        System.out.println(ws.exist(board1, "ABCB"));   // Output: false
+        System.out.println(ws.exist(board1, "SEE")); // Output: true
+        System.out.println(ws.exist(board1, "ABCB")); // Output: false
     }
 }

@@ -10,7 +10,8 @@ public class PalindromePartitioning {
     }
 
     private void backtrack(String s, int start, List<String> currentList, List<List<String>> result) {
-        // Base case: If we've reached the end of the string, add the current partition to the result
+        // Base case: If we've reached the end of the string, add the current partition
+        // to the result
         if (start == s.length()) {
             result.add(new ArrayList<>(currentList));
             return;
@@ -19,7 +20,8 @@ public class PalindromePartitioning {
         // Explore all possible partitions by trying every possible end index
         for (int end = start; end < s.length(); end++) {
             if (isPalindrome(s, start, end)) {
-                // If the substring s[start:end+1] is a palindrome, add it to the current partition
+                // If the substring s[start:end+1] is a palindrome, add it to the current
+                // partition
                 currentList.add(s.substring(start, end + 1));
                 // Recur to partition the remaining substring
                 backtrack(s, end + 1, currentList, result);

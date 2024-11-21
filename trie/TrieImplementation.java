@@ -1,4 +1,3 @@
-package trie;
 
 public class TrieImplementation {
     public static class Node {
@@ -34,72 +33,79 @@ public class TrieImplementation {
         Node curr = root;
         for (int i = 0; i < word.length(); i++) {
             int idx = word.charAt(i) - 'a';
-            if (curr.children[idx] == null) return false;
-            if (i == word.length() - 1 && !curr.children[idx].eow) return false;
+            if (curr.children[idx] == null)
+                return false;
+            if (i == word.length() - 1 && !curr.children[idx].eow)
+                return false;
             curr = curr.children[idx];
         }
         return true;
     }
 
-    public static void WordBreak(String word){
+    public static void WordBreak(String word) {
         Node curr = root;
-        for(int i = 0 ; i < word.length() ; i++){
+        for (int i = 0; i < word.length(); i++) {
             int idx = word.charAt(i) - 'a';
-            if(root.children[idx] == null) return;
+            if (root.children[idx] == null)
+                return;
             String s = "";
-            if(curr.children[idx].eow == true){
+            if (curr.children[idx].eow == true) {
                 System.out.println(s);
                 s = "";
-            }else{
+            } else {
                 s += word.charAt(i);
             }
             curr = curr.children[idx];
         }
     }
-    public static boolean wordBreak(String key){
-        if(key.length() == 0) return true;
-        for(int i =  1 ; i <= key.length() ; i++){
-            String firstPart = key.substring(0 , i);
+
+    public static boolean wordBreak(String key) {
+        if (key.length() == 0)
+            return true;
+        for (int i = 1; i <= key.length(); i++) {
+            String firstPart = key.substring(0, i);
             String lastPart = key.substring(i);
-            if(search(firstPart) && wordBreak(lastPart)) return true;
+            if (search(firstPart) && wordBreak(lastPart))
+                return true;
         }
         return false;
     }
 
-    public static boolean startsWith(String word){
+    public static boolean startsWith(String word) {
         Node curr = root;
-        for(int i = 0 ; i < word.length(); i++){
+        for (int i = 0; i < word.length(); i++) {
             int idx = word.charAt(i) - 'a';
-            if(curr.children[idx] == null) return false;
+            if (curr.children[idx] == null)
+                return false;
             curr = curr.children[idx];
         }
 
         return true;
     }
 
-    public static int countNodes(Node root){
+    public static int countNodes(Node root) {
         Node curr = root;
-        if(curr == null) return 0;
+        if (curr == null)
+            return 0;
         int count = 0;
 
-        for(int i = 0; i  < 26 ; i++){
-            if(curr.children[i] != null)
-            count += countNodes(root.children[i]);
+        for (int i = 0; i < 26; i++) {
+            if (curr.children[i] != null)
+                count += countNodes(root.children[i]);
         }
 
-        return count +1;
+        return count + 1;
     }
 
-
-    public static void helper(){
+    public static void helper() {
         // String s = "ababa";
         // for(int i = 0 ; i < s.length() ; i++){
-        //     insert(s.substring(i));
+        // insert(s.substring(i));
         // }
         // System.out.println(countNodes(root));
 
-        String words[] = {"a", "banana" , "app" , "appl" , "ap" ,"apply" , "apple"};
-        for(int i = 0 ; i < words.length ; i++){
+        String words[] = { "a", "banana", "app", "appl", "ap", "apply", "apple" };
+        for (int i = 0; i < words.length; i++) {
             insert(words[i]);
         }
 
@@ -108,16 +114,18 @@ public class TrieImplementation {
     }
 
     public static String ans = "";
-    public static void longestWord(Node root , StringBuilder temp){
-        if(root == null) return;
-        for(int i = 0 ; i < 26 ; i++){
-            if(root.children[i] != null && root.children[i].eow == true){
+
+    public static void longestWord(Node root, StringBuilder temp) {
+        if (root == null)
+            return;
+        for (int i = 0; i < 26; i++) {
+            if (root.children[i] != null && root.children[i].eow == true) {
                 temp.append((char) (i + 'a'));
-                if(temp.length() > ans.length()){
+                if (temp.length() > ans.length()) {
                     ans = temp.toString();
                 }
                 longestWord(root.children[i], temp);
-                temp.deleteCharAt(temp.length()-1);
+                temp.deleteCharAt(temp.length() - 1);
             }
         }
 
@@ -126,11 +134,11 @@ public class TrieImplementation {
     public static void main(String[] args) {
         // String[] words = {"the", "there", "a", "their"};
         // for (String val : words) {
-        //     insert(val);
+        // insert(val);
         // }
 
         // for (String w : words) {
-        //     System.out.println(search(w)); // Should print 'true' for each word
+        // System.out.println(search(w)); // Should print 'true' for each word
         // }
         // System.out.println();
         // System.out.println(wordBreak("theathere"));
