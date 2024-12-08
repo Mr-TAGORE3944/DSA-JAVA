@@ -1,0 +1,32 @@
+import java.util.List;
+
+public class Triangle {
+    public int minimumTotal(List<List<Integer>> triangle) {
+        int n = triangle.size();
+
+        // Start from the second-last row and move upwards
+        for (int i = n - 2; i >= 0; i--) {
+            // Update each element in the row to hold the minimum path sum from the current
+            // element
+            for (int j = 0; j < triangle.get(i).size(); j++) {
+                int minSumBelow = Math.min(triangle.get(i + 1).get(j), triangle.get(i + 1).get(j + 1));
+                int updatedValue = triangle.get(i).get(j) + minSumBelow;
+                triangle.get(i).set(j, updatedValue);
+            }
+        }
+
+        // The top element now contains the minimum path sum
+        return triangle.get(0).get(0);
+    }
+
+    public static void main(String[] args) {
+        Triangle solution = new Triangle();
+        List<List<Integer>> triangle = List.of(
+                List.of(2),
+                List.of(3, 4),
+                List.of(6, 5, 7),
+                List.of(4, 1, 8, 3));
+
+        System.out.println("Minimum path sum: " + solution.minimumTotal(triangle)); // Output: 11
+    }
+}
