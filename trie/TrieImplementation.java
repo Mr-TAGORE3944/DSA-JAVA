@@ -132,18 +132,6 @@ public class TrieImplementation {
     }
 
     public static void main(String[] args) {
-        // String[] words = {"the", "there", "a", "their"};
-        // for (String val : words) {
-        // insert(val);
-        // }
-
-        // for (String w : words) {
-        // System.out.println(search(w)); // Should print 'true' for each word
-        // }
-        // System.out.println();
-        // System.out.println(wordBreak("theathere"));
-        // System.out.println();
-        // System.out.println(startsWith("thoi"));
 
         helper();
     }

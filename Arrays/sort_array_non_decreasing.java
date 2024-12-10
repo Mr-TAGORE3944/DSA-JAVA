@@ -12,17 +12,11 @@ public class sort_array_non_decreasing {
         }
     }
 
-
-
-
-
-
-
-    static int[] sortArray(int[] arr){
+    static int[] sortArray(int[] arr) {
         int i = 0;
-        int j = arr.length-1;
+        int j = arr.length - 1;
         int[] ans = new int[arr.length];
-        int k = arr.length-1;
+        int k = arr.length - 1;
 
         while (i <= j) {
             if (Math.abs(arr[i]) > Math.abs(arr[j])) {
@@ -37,8 +31,6 @@ public class sort_array_non_decreasing {
         return ans;
     }
 
-
-
     public static void main(String[] args) {
         Scanner input = new Scanner(System.in);
 
@@ -46,7 +38,7 @@ public class sort_array_non_decreasing {
         int n = input.nextInt();
         int[] arr = new int[n];
         System.out.println("Enter the values of array: ");
-        for(int i = 0 ; i < n ; i++){
+        for (int i = 0; i < n; i++) {
             arr[i] = input.nextInt();
         }
         System.out.println(Arrays.toString(arr));

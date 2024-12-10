@@ -23,7 +23,7 @@ class Solution {
             // If adding the current number exceeds maxSum, stop
             if (currentSum + i > maxSum) {
                 break;
-            }
+            }+
 
             // Add the number to the sum and increment the count
             currentSum += i;

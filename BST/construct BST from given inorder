@@ -1,16 +1,5 @@
-// Constructing a Binary Search Tree (BST) from a given inorder traversal is straightforward because the inorder traversal of a BST yields the nodes in sorted order. To construct a BST from an inorder array, we can use a recursive approach where we always choose the middle element as the root to ensure balanced construction.
 
-// ### Algorithm Outline
-// 1. Find the middle element of the inorder array. This element will be the root of the current subtree.
-// 2. Recursively construct the left subtree using the left half of the inorder array.
-// 3. Recursively construct the right subtree using the right half of the inorder array.
-
-// ### Implementation in Java
-
-// Here's a Java implementation of constructing a BST from an inorder traversal:
-
-// ```java
-class TreeNode {
+public class TreeNode {
     int val;
     TreeNode left, right;
 

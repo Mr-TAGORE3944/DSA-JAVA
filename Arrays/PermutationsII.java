@@ -4,7 +4,7 @@ public class PermutationsII {
 
     public List<List<Integer>> permuteUnique(int[] nums) {
         List<List<Integer>> result = new ArrayList<>();
-        Arrays.sort(nums);  // Sort the array to make it easier to skip duplicates
+        Arrays.sort(nums); // Sort the array to make it easier to skip duplicates
         boolean[] used = new boolean[nums.length];
         backtrack(nums, used, new ArrayList<>(), result);
         return result;
@@ -35,7 +35,7 @@ public class PermutationsII {
 
     public static void main(String[] args) {
         PermutationsII perm = new PermutationsII();
-        int[] nums = {1, 1, 2};
+        int[] nums = { 1, 1, 2 };
         List<List<Integer>> result = perm.permuteUnique(nums);
         for (List<Integer> list : result) {
             System.out.println(list);

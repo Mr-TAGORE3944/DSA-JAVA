@@ -2,7 +2,7 @@ class Node {
     int data;
     Node left, right;
 
-    public Node(int item) {
+    public Node(int item){
         data = item;
         left = right = null;
     }
@@ -30,7 +30,7 @@ class BinarySearchTree {
         }
         node.left = null;  // Set the left child of the current node to null
         prev = node;  // Update the previous node
-
+        
         // Recur for the right subtree
         flattenBST(node.right);
     }

@@ -1,17 +1,4 @@
-// Constructing a Binary Search Tree (BST) from a given postorder traversal involves recursively constructing the tree by considering the properties of BST and postorder traversal.
 
-// ### Algorithm Outline
-// 1. The last element of the postorder traversal is the root of the BST.
-// 2. Elements before the root in the postorder array can be divided into two groups: 
-//    - Elements in the left subtree (those smaller than the root).
-//    - Elements in the right subtree (those larger than the root).
-// 3. Recursively apply the same process to the left and right subarrays.
-
-// ### Implementation in Java
-
-// Here's a Java implementation of the above approach:
-
-// ```java
 class TreeNode {
     int val;
     TreeNode left, right;

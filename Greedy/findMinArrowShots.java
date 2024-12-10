@@ -4,21 +4,9 @@ import backtracking.printPermutations;
 
 public class findMinArrowShots {
 
-    // public class Pair implements Comparator {
-    // int start;
-    // int end;
-
-    // Pair(int start, int end) {
-    // this.start = start;
-    // this.end = end;
-    // }
-    // }
-
     public static int solution(int[][] points) {
         int n = points.length;
         int arrows = 1;
-
-        // PriorityQueue<Pair> pq = new PriorityQueue<>((a, b) -> a.start < b.start);
 
         Arrays.sort(points, (a, b) -> Integer.compare(a[1], b[1]));
 
