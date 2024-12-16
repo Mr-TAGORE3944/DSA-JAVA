@@ -16,7 +16,6 @@ public class FirstOccurrenceTwoPointer {
             while (j < n && haystack.charAt(i + j) == needle.charAt(j)) {
                 j++;
             }
-
             // If j reaches the end of needle, we found a match
             if (j == n) {
                 return i;

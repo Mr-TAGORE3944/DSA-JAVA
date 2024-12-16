@@ -3,7 +3,6 @@ import java.util.Stack;
 public class EvaluateRPN {
     public int evalRPN(String[] tokens) {
         Stack<Integer> stack = new Stack<>();
-
         for (String token : tokens) {
             switch (token) {
                 case "+":

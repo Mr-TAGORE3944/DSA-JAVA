@@ -1,6 +1,6 @@
 import java.util.Stack;
 
-public class BasicCalculator {
+public class BasicCalculator1 {
     public int calculate(String s) {
         Stack<Integer> stack = new Stack<>();
         int num = 0;
@@ -44,7 +44,7 @@ public class BasicCalculator {
     }
 
     public static void main(String[] args) {
-        BasicCalculator calculator = new BasicCalculator();
+        BasicCalculator1 calculator = new BasicCalculator1();
         System.out.println(calculator.calculate("3+2*2")); // Output: 7
         System.out.println(calculator.calculate(" 3/2 ")); // Output: 1
         System.out.println(calculator.calculate(" 3+5 / 2 ")); // Output: 5

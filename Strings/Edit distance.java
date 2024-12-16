@@ -1,21 +1,11 @@
-The **Edit Distance** (also known as Levenshtein Distance) is a measure of how dissimilar two strings are, based on the minimum number of operations required to transform one string into the other. The operations allowed are:
-1. **Insertion** of a character.
-2. **Deletion** of a character.
-3. **Substitution** of a character.
 
-For example:
-- The edit distance between `"kitten"` and `"sitting"` is 3 (`kitten -> sitten -> sittin -> sitting`).
-
-Here's a dynamic programming approach to solve the Edit Distance problem in Java:
-
-### Code:
-```java
 public class EditDistance {
     public int minDistance(String word1, String word2) {
         int m = word1.length();
         int n = word2.length();
-        
-        // dp[i][j] represents the edit distance between word1[0...i-1] and word2[0...j-1]
+
+        // dp[i][j] represents the edit distance between word1[0...i-1] and
+        // word2[0...j-1]
         int[][] dp = new int[m + 1][n + 1];
 
         // If word1 is empty, the cost is adding all characters of word2
@@ -39,9 +29,9 @@ public class EditDistance {
                     // 1. Insert (dp[i][j-1])
                     // 2. Delete (dp[i-1][j])
                     // 3. Replace (dp[i-1][j-1])
-                    dp[i][j] = 1 + Math.min(dp[i - 1][j],  // Deletion
-                                Math.min(dp[i][j - 1],    // Insertion
-                                         dp[i - 1][j - 1])); // Replacement
+                    dp[i][j] = 1 + Math.min(dp[i - 1][j], // Deletion
+                            Math.min(dp[i][j - 1], // Insertion
+                                    dp[i - 1][j - 1])); // Replacement
                 }
             }
         }
@@ -59,81 +49,95 @@ public class EditDistance {
         System.out.println("Edit Distance: " + result); // Output: 3
     }
 }
-```
 
-### Explanation:
+// ### Explanation:
 
-1. **DP Table (`dp[i][j]`)**:
-   - `dp[i][j]` represents the minimum number of operations required to convert the first `i` characters of `word1` to the first `j` characters of `word2`.
-   - **Base cases**:
-     - If `word1` is empty, the cost is the number of insertions required to match `word2` (`dp[0][j] = j`).
-     - If `word2` is empty, the cost is the number of deletions required to match `word1` (`dp[i][0] = i`).
+// 1. **DP Table (`dp[i][j]`)**:
+// - `dp[i][j]` represents the minimum number of operations required to convert
+// the first `i` characters of `word1` to the first `j` characters of `word2`.
+// - **Base cases**:
+// - If `word1` is empty, the cost is the number of insertions required to match
+// `word2` (`dp[0][j] = j`).
+// - If `word2` is empty, the cost is the number of deletions required to match
+// `word1` (`dp[i][0] = i`).
 
-2. **Filling the DP Table**:
-   - If `word1[i-1] == word2[j-1]`, no operation is needed, so `dp[i][j] = dp[i-1][j-1]`.
-   - Otherwise, we consider the three possible operations:
-     - **Insert** a character in `word1`: This reduces the problem to `dp[i][j-1] + 1`.
-     - **Delete** a character from `word1`: This reduces the problem to `dp[i-1][j] + 1`.
-     - **Replace** a character in `word1`: This reduces the problem to `dp[i-1][j-1] + 1`.
+// 2. **Filling the DP Table**:
+// - If `word1[i-1] == word2[j-1]`, no operation is needed, so `dp[i][j] =
+// dp[i-1][j-1]`.
+// - Otherwise, we consider the three possible operations:
+// - **Insert** a character in `word1`: This reduces the problem to `dp[i][j-1]
+// + 1`.
+// - **Delete** a character from `word1`: This reduces the problem to
+// `dp[i-1][j] + 1`.
+// - **Replace** a character in `word1`: This reduces the problem to
+// `dp[i-1][j-1] + 1`.
 
-3. **Result**: The final value, `dp[m][n]`, contains the minimum number of operations required to convert `word1` into `word2`.
+// 3. **Result**: The final value, `dp[m][n]`, contains the minimum number of
+// operations required to convert `word1` into `word2`.
 
-### Example:
+// ### Example:
 
-For `word1 = "kitten"` and `word2 = "sitting"`, the edit distance is calculated as follows:
-1. Replace `'k'` with `'s'`: `"kitten" -> "sitten"`
-2. Replace `'e'` with `'i'`: `"sitten" -> "sittin"`
-3. Insert `'g'`: `"sittin" -> "sitting"`
+// For `word1 = "kitten"` and `word2 = "sitting"`, the edit distance is
+// calculated as follows:
+// 1. Replace `'k'` with `'s'`: `"kitten" -> "sitten"`
+// 2. Replace `'e'` with `'i'`: `"sitten" -> "sittin"`
+// 3. Insert `'g'`: `"sittin" -> "sitting"`
 
-The total number of operations is 3.
+// The total number of operations is 3.
 
-### Time Complexity:
-- **O(m * n)** where `m` is the length of `word1` and `n` is the length of `word2`. We fill a 2D table of size `m x n`, and each cell takes constant time to compute.
+// ### Time Complexity:
+// - **O(m * n)** where `m` is the length of `word1` and `n` is the length of
+// `word2`. We fill a 2D table of size `m x n`, and each cell takes constant
+// time to compute.
 
-### Space Complexity:
-- **O(m * n)** because we are using a 2D array to store the results of subproblems.
+// ### Space Complexity:
+// - **O(m * n)** because we are using a 2D array to store the results of
+// subproblems.
 
-### Space Optimization:
+// ### Space Optimization:
 
-If you want to reduce the space complexity to **O(n)** (where `n` is the length of `word2`), you can use a 1D array since the current state in `dp` depends only on the current and previous rows:
+// If you want to reduce the space complexity to **O(n)** (where `n` is the
+// length of `word2`), you can use a 1D array since the current state in `dp`
+// depends only on the current and previous rows:
 
-```java
-public class EditDistance {
-    public int minDistance(String word1, String word2) {
-        int m = word1.length();
-        int n = word2.length();
-        
-        // Use a 1D array to represent the previous row in the dp table
-        int[] dp = new int[n + 1];
+// ```java
+// public class EditDistance {
+// public int minDistance(String word1, String word2) {
+// int m = word1.length();
+// int n = word2.length();
 
-        // Initialize the base case for when word1 is empty
-        for (int j = 0; j <= n; j++) {
-            dp[j] = j;
-        }
+// // Use a 1D array to represent the previous row in the dp table
+// int[] dp = new int[n + 1];
 
-        // Iterate through the characters of word1
-        for (int i = 1; i <= m; i++) {
-            int prev = dp[0];  // Store the previous diagonal element
-            dp[0] = i;  // Initialize the first element in the row for deletions
-            
-            for (int j = 1; j <= n; j++) {
-                int temp = dp[j];  // Save the current value before updating
-                
-                if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
-                    dp[j] = prev;  // If characters match, no change needed
-                } else {
-                    dp[j] = 1 + Math.min(dp[j - 1], // Insertion
-                                         Math.min(dp[j], // Deletion
-                                                  prev));  // Replacement
-                }
-                
-                prev = temp;  // Update the previous diagonal element
-            }
-        }
+// // Initialize the base case for when word1 is empty
+// for (int j = 0; j <= n; j++) {
+// dp[j] = j;
+// }
 
-        return dp[n];
-    }
-}
-```
+// // Iterate through the characters of word1
+// for (int i = 1; i <= m; i++) {
+// int prev = dp[0]; // Store the previous diagonal element
+// dp[0] = i; // Initialize the first element in the row for deletions
 
-This optimized version keeps only the current and previous rows in memory, reducing the space complexity to **O(n)**.
+// for (int j = 1; j <= n; j++) {
+// int temp = dp[j]; // Save the current value before updating
+
+// if (word1.charAt(i - 1) == word2.charAt(j - 1)) {
+// dp[j] = prev; // If characters match, no change needed
+// } else {
+// dp[j] = 1 + Math.min(dp[j - 1], // Insertion
+// Math.min(dp[j], // Deletion
+// prev)); // Replacement
+// }
+
+// prev = temp; // Update the previous diagonal element
+// }
+// }
+
+// return dp[n];
+// }
+// }
+// ```
+
+// This optimized version keeps only the current and previous rows in memory,
+// reducing the space complexity to **O(n)**.
