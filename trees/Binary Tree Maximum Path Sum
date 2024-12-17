@@ -14,6 +14,8 @@ public class BinaryTree {
         if (node == null) {
             return 0;
         }
+        // to find the max path sum, we consider . firstly sum of left and right. 
+        // now take the max of left and right sum.
 
         // Recursively calculate the maximum path sum for the left and right subtrees
         int leftSum = Math.max(maxPathSumHelper(node.left), 0);
