@@ -5,12 +5,8 @@ import java.util.Queue;
 import java.util.Stack;
 
 public class reverse_queue {
-    
-
-
 
     public static void main(String[] args) {
-        
 
         Queue<Integer> q = new LinkedList();
         q.add(1);
@@ -26,8 +22,8 @@ public class reverse_queue {
         System.out.println(st);
         while (st.size() > 0) {
             q.add(st.pop());
-                }
+        }
 
-                System.out.println(q);
+        System.out.println(q);
     }
 }
