@@ -13,7 +13,7 @@ public class BestTimeToBuyAndSellStock {
             // Update minPrice if a new lower price is found
             if (price < minPrice) {
                 minPrice = price;
-            } 
+            }
             // Calculate profit if selling at the current price
             else {
                 int profit = price - minPrice;
@@ -29,7 +29,7 @@ public class BestTimeToBuyAndSellStock {
 
     public static void main(String[] args) {
         BestTimeToBuyAndSellStock solution = new BestTimeToBuyAndSellStock();
-        int[] prices = {7, 1, 5, 3, 6, 4};
+        int[] prices = { 7, 1, 5, 3, 6, 4 };
         System.out.println("Maximum Profit: " + solution.maxProfit(prices)); // Output: 5
     }
 }

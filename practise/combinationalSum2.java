@@ -8,17 +8,15 @@ import java.util.List;
 
 public class combinationalSum2 {
 
-
-    public static List<List<Integer>> combination(int[] nums,int target){
+    public static List<List<Integer>> combination(int[] nums, int target) {
         int n = nums.length;
-        List<List<Integer>>  result = new ArrayList<>();
+        List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(nums);
-        backtrack(nums , target , 0 , new ArrayList<>() , result);
+        backtrack(nums, target, 0, new ArrayList<>(), result);
         return result;
     }
-    
 
-    public static void backtrack(int nums[] , int target , int start , List<Integer> current , List<List<Integer>> result){
+    public static void backtrack(int nums[], int target, int start, List<Integer> current, List<List<Integer>> result) {
         if (target == 0) {
             result.add(new ArrayList<>(current));
             return;
@@ -28,21 +26,21 @@ public class combinationalSum2 {
             return;
         }
 
-        for(int i = start ; i < nums.length ; i++){
+        for (int i = start; i < nums.length; i++) {
 
             // skip the duplicate elements from array;
-            if (i > 0 && nums[i] == nums[i-1]) {
+            if (i > 0 && nums[i] == nums[i - 1]) {
                 continue;
             }
 
             current.add(nums[i]);
-            backtrack(nums, target - nums[i], i+1, current, result);
+            backtrack(nums, target - nums[i], i + 1, current, result);
             current.remove(current.size() - 1);
         }
     }
 
     public static void main(String[] args) {
-        int nums[] = {10 , 1 , 2 , 7 , 6, 1, 5};
+        int nums[] = { 10, 1, 2, 7, 6, 1, 5 };
         int target = 8;
 
         System.out.println(combination(nums, target));
@@ -50,16 +48,16 @@ public class combinationalSum2 {
 
     }
 
-    // practise 
+    // practise
 
-    public static List<List<Integer>> Ans(int[] nums , int target){
+    public static List<List<Integer>> Ans(int[] nums, int target) {
         List<List<Integer>> result = new ArrayList<>();
         Arrays.sort(nums);
-        ans(nums , target , 0 , new ArrayList<>() , result);
+        ans(nums, target, 0, new ArrayList<>(), result);
         return result;
     }
 
-    public static void ans(int[] nums , int target , int start , List<Integer> current , List<List<Integer>> result){
+    public static void ans(int[] nums, int target, int start, List<Integer> current, List<List<Integer>> result) {
         if (target == 0) {
             result.add(new ArrayList<>(current));
             return;
@@ -69,15 +67,14 @@ public class combinationalSum2 {
             return;
         }
 
-        for(int i =   start ; i < nums.length ; i++){
+        for (int i = start; i < nums.length; i++) {
 
-            if (i > start && nums[i] == nums[i-1]) {
+            if (i > start && nums[i] == nums[i - 1]) {
                 continue;
             }
 
-
             current.add(nums[i]);
-            ans(nums, target - nums[i], i+ 1, current, result);
+            ans(nums, target - nums[i], i + 1, current, result);
             current.remove(current.size() - 1);
         }
     }

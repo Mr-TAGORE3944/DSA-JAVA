@@ -21,8 +21,8 @@ public class GasStation {
 
     public static void main(String[] args) {
         GasStation gasStation = new GasStation();
-        int[] gas = {1, 2, 3, 4, 5};
-        int[] cost = {3, 4, 5, 1, 2};
+        int[] gas = { 1, 2, 3, 4, 5 };
+        int[] cost = { 3, 4, 5, 1, 2 };
         int startingStation = gasStation.canCompleteCircuit(gas, cost);
 
         if (startingStation != -1) {
