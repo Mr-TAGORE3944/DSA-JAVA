@@ -1,6 +1,7 @@
-public class Minimum Path Sum {
-    
+public class MinimumPathSum {
+
 }
+
 class Solution {
     public int minPathSum(int[][] grid) {
         int m = grid.length;
@@ -21,7 +22,6 @@ class Solution {
         for (int i = 1; i < m; i++) {
             dp[i][0] = dp[i - 1][0] + grid[i][0];
         }
-
         // Fill the rest of the dp table
         for (int i = 1; i < m; i++) {
             for (int j = 1; j < n; j++) {

@@ -35,7 +35,6 @@ class BinaryTreeToBST {
         node.data = inorder.get(index);
         index = index + 1;
         index = arrayToBST(node.right, inorder, index);
-
         return index;
     }
 

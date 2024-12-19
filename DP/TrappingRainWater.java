@@ -31,7 +31,7 @@ public class TrappingRainWater {
 
     public static void main(String[] args) {
         TrappingRainWater solution = new TrappingRainWater();
-        int[] height = {0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1};
+        int[] height = { 0, 1, 0, 2, 1, 0, 1, 3, 2, 1, 2, 1 };
         int result = solution.trap(height);
 
         System.out.println("Total trapped water: " + result + " units");

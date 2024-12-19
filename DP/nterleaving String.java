@@ -12,7 +12,8 @@ public class InterleavingString {
         // Create a DP table
         boolean[][] dp = new boolean[n + 1][m + 1];
 
-        // Initialize dp[0][0] to true (empty string interleaves to form an empty string)
+        // Initialize dp[0][0] to true (empty string interleaves to form an empty
+        // string)
         dp[0][0] = true;
 
         // Fill the first row (using only characters from s1)
@@ -31,13 +32,15 @@ public class InterleavingString {
                 char c1 = s1.charAt(i - 1);
                 char c2 = s2.charAt(j - 1);
                 char c3 = s3.charAt(i + j - 1);
-                
-                // If s1's current character matches with s3's current character, carry over the result from dp[i-1][j]
+
+                // If s1's current character matches with s3's current character, carry over the
+                // result from dp[i-1][j]
                 if (c1 == c3) {
                     dp[i][j] = dp[i][j] || dp[i - 1][j];
                 }
-                
-                // If s2's current character matches with s3's current character, carry over the result from dp[i][j-1]
+
+                // If s2's current character matches with s3's current character, carry over the
+                // result from dp[i][j-1]
                 if (c2 == c3) {
                     dp[i][j] = dp[i][j] || dp[i][j - 1];
                 }
@@ -53,7 +56,7 @@ public class InterleavingString {
         String s1 = "aabcc";
         String s2 = "dbbca";
         String s3 = "aadbbcbcac";
-        
+
         System.out.println("Is interleaving: " + solution.isInterleave(s1, s2, s3)); // Output: true
     }
 }

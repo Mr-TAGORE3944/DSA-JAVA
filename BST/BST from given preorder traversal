@@ -95,7 +95,12 @@ class BinaryTree {
 		Node root = tree.constructTree(pre, size);
 		
 		tree.printInorder(root);
+
 	}
 }
 
 // This code has been contributed by Mayank Jaiswal
+
+
+// Output:
+// 1 5 7 10 40 50
