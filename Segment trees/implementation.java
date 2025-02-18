@@ -51,6 +51,7 @@ public class implementation {
         }
         // System.out.println(diff);
         tree[i] += diff;
+        // for leaf nodes
         if (si != sj) {
             int mid = (si + sj) / 2;
             update(2 * i + 1, si, mid, idx, diff);
