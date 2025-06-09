@@ -164,123 +164,123 @@ public class BipartiteGraph {
 
 
 
-///////////////////////////////////////////////////////////////////////////////////////
+// ///////////////////////////////////////////////////////////////////////////////////////
 
 
 
 
 
-A graph is bipartite if its vertices can be divided into two disjoint sets such that no two vertices within the same set are adjacent. This can be tested using a coloring approach where each vertex is colored with one of two colors. If the graph can be colored with two colors such that no two adjacent vertices share the same color, then the graph is bipartite.
+// A graph is bipartite if its vertices can be divided into two disjoint sets such that no two vertices within the same set are adjacent. This can be tested using a coloring approach where each vertex is colored with one of two colors. If the graph can be colored with two colors such that no two adjacent vertices share the same color, then the graph is bipartite.
 
-### Approach
+// ### Approach
 
-1. **Graph Representation**:
-   - Represent the graph using an adjacency list.
+// 1. **Graph Representation**:
+//    - Represent the graph using an adjacency list.
 
-2. **Bipartiteness Check**:
-   - Use BFS (or DFS) to attempt to color the graph using two colors. 
-   - Start from any unvisited vertex, color it with one color, and attempt to color all its neighbors with the other color. If a conflict is detected (i.e., two adjacent vertices have the same color), then the graph is not bipartite.
+// 2. **Bipartiteness Check**:
+//    - Use BFS (or DFS) to attempt to color the graph using two colors. 
+//    - Start from any unvisited vertex, color it with one color, and attempt to color all its neighbors with the other color. If a conflict is detected (i.e., two adjacent vertices have the same color), then the graph is not bipartite.
 
-### Java Implementation
+// ### Java Implementation
 
-Here's a Java implementation of the bipartiteness check using BFS:
+// Here's a Java implementation of the bipartiteness check using BFS:
 
-```java
-import java.util.*;
+// ```java
+// import java.util.*;
 
-public class BipartiteGraph {
+// public class BipartiteGraph {
 
-    public static void main(String[] args) {
-        int V = 4; // Number of vertices
-        List<List<Integer>> graph = new ArrayList<>();
+//     public static void main(String[] args) {
+//         int V = 4; // Number of vertices
+//         List<List<Integer>> graph = new ArrayList<>();
 
-        // Initialize graph
-        for (int i = 0; i < V; i++) {
-            graph.add(new ArrayList<>());
-        }
+//         // Initialize graph
+//         for (int i = 0; i < V; i++) {
+//             graph.add(new ArrayList<>());
+//         }
 
-        // Add edges to the graph
-        addEdge(graph, 0, 1);
-        addEdge(graph, 1, 2);
-        addEdge(graph, 2, 3);
-        addEdge(graph, 3, 0); // Add this edge to make the graph non-bipartite
+//         // Add edges to the graph
+//         addEdge(graph, 0, 1);
+//         addEdge(graph, 1, 2);
+//         addEdge(graph, 2, 3);
+//         addEdge(graph, 3, 0); // Add this edge to make the graph non-bipartite
 
-        BipartiteGraph checker = new BipartiteGraph();
-        if (checker.isBipartite(graph, V)) {
-            System.out.println("The graph is bipartite.");
-        } else {
-            System.out.println("The graph is not bipartite.");
-        }
-    }
+//         BipartiteGraph checker = new BipartiteGraph();
+//         if (checker.isBipartite(graph, V)) {
+//             System.out.println("The graph is bipartite.");
+//         } else {
+//             System.out.println("The graph is not bipartite.");
+//         }
+//     }
 
-    static void addEdge(List<List<Integer>> graph, int u, int v) {
-        graph.get(u).add(v);
-        graph.get(v).add(u);
-    }
+//     static void addEdge(List<List<Integer>> graph, int u, int v) {
+//         graph.get(u).add(v);
+//         graph.get(v).add(u);
+//     }
 
-    boolean isBipartite(List<List<Integer>> graph, int V) {
-        int[] color = new int[V]; // Color array to store colors assigned to vertices
-        Arrays.fill(color, -1); // Initialize all vertices as uncolored
+//     boolean isBipartite(List<List<Integer>> graph, int V) {
+//         int[] color = new int[V]; // Color array to store colors assigned to vertices
+//         Arrays.fill(color, -1); // Initialize all vertices as uncolored
 
-        for (int i = 0; i < V; i++) {
-            if (color[i] == -1) {
-                if (!bfsCheck(graph, color, i)) {
-                    return false;
-                }
-            }
-        }
-        return true;
-    }
+//         for (int i = 0; i < V; i++) {
+//             if (color[i] == -1) {
+//                 if (!bfsCheck(graph, color, i)) {
+//                     return false;
+//                 }
+//             }
+//         }
+//         return true;
+//     }
 
-    boolean bfsCheck(List<List<Integer>> graph, int[] color, int start) {
-        Queue<Integer> queue = new LinkedList<>();
-        queue.add(start);
-        color[start] = 0; // Start coloring with color 0
+//     boolean bfsCheck(List<List<Integer>> graph, int[] color, int start) {
+//         Queue<Integer> queue = new LinkedList<>();
+//         queue.add(start);
+//         color[start] = 0; // Start coloring with color 0
 
-        while (!queue.isEmpty()) {
-            int node = queue.poll();
+//         while (!queue.isEmpty()) {
+//             int node = queue.poll();
 
-            for (int neighbor : graph.get(node)) {
-                if (color[neighbor] == -1) { // If not colored
-                    color[neighbor] = 1 - color[node]; // Assign alternate color
-                    queue.add(neighbor);
-                } else if (color[neighbor] == color[node]) { // If same color
-                    return false; // Not bipartite
-                }
-            }
-        }
-        return true;
-    }
-}
-```
+//             for (int neighbor : graph.get(node)) {
+//                 if (color[neighbor] == -1) { // If not colored
+//                     color[neighbor] = 1 - color[node]; // Assign alternate color
+//                     queue.add(neighbor);
+//                 } else if (color[neighbor] == color[node]) { // If same color
+//                     return false; // Not bipartite
+//                 }
+//             }
+//         }
+//         return true;
+//     }
+// }
+// ```
 
-### Explanation:
+// ### Explanation:
 
-1. **Graph Representation**:
-   - The graph is represented using an adjacency list. Each vertex has a list of adjacent vertices.
+// 1. **Graph Representation**:
+//    - The graph is represented using an adjacency list. Each vertex has a list of adjacent vertices.
 
-2. **Bipartiteness Check**:
-   - The `isBipartite` function initializes a color array where each vertex is initially uncolored (`-1`).
-   - It iterates over all vertices, starting BFS from each unvisited vertex to ensure all components are checked.
+// 2. **Bipartiteness Check**:
+//    - The `isBipartite` function initializes a color array where each vertex is initially uncolored (`-1`).
+//    - It iterates over all vertices, starting BFS from each unvisited vertex to ensure all components are checked.
 
-3. **BFS Function**:
-   - The `bfsCheck` function performs BFS starting from the given vertex.
-   - It colors the starting vertex with color `0` and its neighbors with color `1`, and so on.
-   - If any neighbor has the same color as the current vertex, it returns `false`, indicating that the graph is not bipartite.
+// 3. **BFS Function**:
+//    - The `bfsCheck` function performs BFS starting from the given vertex.
+//    - It colors the starting vertex with color `0` and its neighbors with color `1`, and so on.
+//    - If any neighbor has the same color as the current vertex, it returns `false`, indicating that the graph is not bipartite.
 
-4. **Output**:
-   - The program outputs whether the graph is bipartite or not based on the results of the BFS checks.
+// 4. **Output**:
+//    - The program outputs whether the graph is bipartite or not based on the results of the BFS checks.
 
-### How to Run the Program:
+// ### How to Run the Program:
 
-1. Save the code in a file named `BipartiteGraph.java`.
-2. Compile the Java file:
-   ```bash
-   javac BipartiteGraph.java
-   ```
-3. Run the program:
-   ```bash
-   java BipartiteGraph
-   ```
+// 1. Save the code in a file named `BipartiteGraph.java`.
+// 2. Compile the Java file:
+//    ```bash
+//    javac BipartiteGraph.java
+//    ```
+// 3. Run the program:
+//    ```bash
+//    java BipartiteGraph
+//    ```
 
-You can modify the graph edges in the `main` method to test different scenarios.
+// You can modify the graph edges in the `main` method to test different scenarios.

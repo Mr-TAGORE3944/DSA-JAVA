@@ -1,20 +1,20 @@
-The "Cheapest Flights Within K Stops" problem involves finding the cheapest price to travel from a source city to a destination city with at most `K` stops in between. This problem can be efficiently solved using a modified Breadth-First Search (BFS) approach or Dijkstra's algorithm with a priority queue.
+// The "Cheapest Flights Within K Stops" problem involves finding the cheapest price to travel from a source city to a destination city with at most `K` stops in between. This problem can be efficiently solved using a modified Breadth-First Search (BFS) approach or Dijkstra's algorithm with a priority queue.
 
-### Approach
+// ### Approach
 
-1. **Graph Representation**:
-   - Represent the graph using an adjacency list where each node points to its neighboring nodes along with the edge weights (flight prices).
+// 1. **Graph Representation**:
+//    - Represent the graph using an adjacency list where each node points to its neighboring nodes along with the edge weights (flight prices).
 
-2. **Modified BFS or Dijkstra's Algorithm**:
-   - Use a priority queue to always expand the least-cost node first.
-   - Keep track of the number of stops used to reach each node.
-   - For each node, explore its neighbors and update the cost if a cheaper route is found.
+// 2. **Modified BFS or Dijkstra's Algorithm**:
+//    - Use a priority queue to always expand the least-cost node first.
+//    - Keep track of the number of stops used to reach each node.
+//    - For each node, explore its neighbors and update the cost if a cheaper route is found.
 
-### Java Implementation
+// ### Java Implementation
 
-Here is a Java implementation using a priority queue to solve the problem:
+// Here is a Java implementation using a priority queue to solve the problem:
 
-```java
+// ```java
 import java.util.*;
 
 public class CheapestFlightsWithinKStops {
@@ -97,125 +97,125 @@ public class CheapestFlightsWithinKStops {
         return -1; // No valid route
     }
 }
-```
+// ```
 
-### Explanation:
+// ### Explanation:
 
-1. **Graph Representation**:
-   - A `Map<Integer, List<Flight>>` is used to represent the graph. Each key is a city, and the value is a list of `Flight` objects representing outgoing flights from that city.
+// 1. **Graph Representation**:
+//    - A `Map<Integer, List<Flight>>` is used to represent the graph. Each key is a city, and the value is a list of `Flight` objects representing outgoing flights from that city.
 
-2. **Priority Queue**:
-   - The priority queue (`pq`) is used to always process the cheapest flight first based on the current price.
+// 2. **Priority Queue**:
+//    - The priority queue (`pq`) is used to always process the cheapest flight first based on the current price.
 
-3. **Tracking Visits**:
-   - The `visited` map tracks the minimum cost to reach each city with a certain number of stops to avoid re-processing more expensive routes.
+// 3. **Tracking Visits**:
+//    - The `visited` map tracks the minimum cost to reach each city with a certain number of stops to avoid re-processing more expensive routes.
 
-4. **Processing**:
-   - For each city, process its neighbors, update the cost, and add the new state to the priority queue if it's cheaper.
+// 4. **Processing**:
+//    - For each city, process its neighbors, update the cost, and add the new state to the priority queue if it's cheaper.
 
-5. **Stopping Condition**:
-   - The search terminates when the destination city is reached or the priority queue is exhausted.
+// 5. **Stopping Condition**:
+//    - The search terminates when the destination city is reached or the priority queue is exhausted.
 
-### How to Run the Program:
+// ### How to Run the Program:
 
-1. Save the code in a file named `CheapestFlightsWithinKStops.java`.
-2. Compile the Java file:
-   ```bash
-   javac CheapestFlightsWithinKStops.java
-   ```
-3. Run the program:
-   ```bash
-   java CheapestFlightsWithinKStops
-   ```
+// 1. Save the code in a file named `CheapestFlightsWithinKStops.java`.
+// 2. Compile the Java file:
+//    ```bash
+//    javac CheapestFlightsWithinKStops.java
+//    ```
+// 3. Run the program:
+//    ```bash
+//    java CheapestFlightsWithinKStops
+//    ```
 
-This program calculates the cheapest flight price with at most `K` stops using a priority queue and a modified BFS approach. Adjust the `n`, `flights`, `src`, `dst`, and `K` values to test different scenarios.
-
-
-
-
-/////////////////////////////////////////////////////////////////////////////////////////
+// This program calculates the cheapest flight price with at most `K` stops using a priority queue and a modified BFS approach. Adjust the `n`, `flights`, `src`, `dst`, and `K` values to test different scenarios.
 
 
 
-import java.util.*;
 
-public class CheapestFlightsWithinKStops {
+// /////////////////////////////////////////////////////////////////////////////////////////
 
-    static class Flight {
-        int destination;
-        int price;
-        int stops;
 
-        Flight(int destination, int price, int stops) {
-            this.destination = destination;
-            this.price = price;
-            this.stops = stops;
-        }
-    }
 
-    public static void main(String[] args) {
-        int n = 4; // Number of cities
-        int[][] flights = {
-            {0, 1, 100},
-            {1, 2, 100},
-            {2, 3, 100},
-            {0, 2, 500},
-            {1, 3, 600}
-        };
-        int src = 0; // Source city
-        int dst = 3; // Destination city
-        int K = 1;   // Maximum number of stops
+// import java.util.*;
 
-        CheapestFlightsWithinKStops solver = new CheapestFlightsWithinKStops();
-        int result = solver.findCheapestPrice(n, flights, src, dst, K);
-        System.out.println("Cheapest price: " + (result == -1 ? "No valid route" : result));
-    }
+// public class CheapestFlightsWithinKStops {
 
-    public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
-        // Build the graph
-        Map<Integer, List<Flight>> graph = new HashMap<>();
-        for (int[] flight : flights) {
-            graph.computeIfAbsent(flight[0], k -> new ArrayList<>()).add(new Flight(flight[1], flight[2], 0));
-        }
+//     static class Flight {
+//         int destination;
+//         int price;
+//         int stops;
 
-        // Priority queue to hold the states of (price, city, stops)
-        PriorityQueue<Flight> pq = new PriorityQueue<>(Comparator.comparingInt(f -> f.price));
-        pq.add(new Flight(src, 0, 0));
+//         Flight(int destination, int price, int stops) {
+//             this.destination = destination;
+//             this.price = price;
+//             this.stops = stops;
+//         }
+//     }
 
-        // Map to keep track of the minimum cost to reach each city with a certain number of stops
-        Map<String, Integer> visited = new HashMap<>();
+//     public static void main(String[] args) {
+//         int n = 4; // Number of cities
+//         int[][] flights = {
+//             {0, 1, 100},
+//             {1, 2, 100},
+//             {2, 3, 100},
+//             {0, 2, 500},
+//             {1, 3, 600}
+//         };
+//         int src = 0; // Source city
+//         int dst = 3; // Destination city
+//         int K = 1;   // Maximum number of stops
 
-        while (!pq.isEmpty()) {
-            Flight current = pq.poll();
-            int currentCity = current.destination;
-            int currentPrice = current.price;
-            int currentStops = current.stops;
+//         CheapestFlightsWithinKStops solver = new CheapestFlightsWithinKStops();
+//         int result = solver.findCheapestPrice(n, flights, src, dst, K);
+//         System.out.println("Cheapest price: " + (result == -1 ? "No valid route" : result));
+//     }
 
-            // If we have reached the destination
-            if (currentCity == dst) {
-                return currentPrice;
-            }
+//     public int findCheapestPrice(int n, int[][] flights, int src, int dst, int K) {
+//         // Build the graph
+//         Map<Integer, List<Flight>> graph = new HashMap<>();
+//         for (int[] flight : flights) {
+//             graph.computeIfAbsent(flight[0], k -> new ArrayList<>()).add(new Flight(flight[1], flight[2], 0));
+//         }
 
-            // If we have used more than K stops, continue
-            if (currentStops > K) {
-                continue;
-            }
+//         // Priority queue to hold the states of (price, city, stops)
+//         PriorityQueue<Flight> pq = new PriorityQueue<>(Comparator.comparingInt(f -> f.price));
+//         pq.add(new Flight(src, 0, 0));
 
-            // Explore the neighbors
-            if (graph.containsKey(currentCity)) {
-                for (Flight neighbor : graph.get(currentCity)) {
-                    int newPrice = currentPrice + neighbor.price;
-                    int newStops = currentStops + 1;
+//         // Map to keep track of the minimum cost to reach each city with a certain number of stops
+//         Map<String, Integer> visited = new HashMap<>();
 
-                    String key = neighbor.destination + "," + newStops;
-                    if (!visited.containsKey(key) || newPrice < visited.get(key)) {
-                        visited.put(key, newPrice);
-                        pq.add(new Flight(neighbor.destination, newPrice, newStops));
-                    }
-                }
-            }
-        }
+//         while (!pq.isEmpty()) {
+//             Flight current = pq.poll();
+//             int currentCity = current.destination;
+//             int currentPrice = current.price;
+//             int currentStops = current.stops;
 
-        return -1; // No valid route
-    }
-}
+//             // If we have reached the destination
+//             if (currentCity == dst) {
+//                 return currentPrice;
+//             }
+
+//             // If we have used more than K stops, continue
+//             if (currentStops > K) {
+//                 continue;
+//             }
+
+//             // Explore the neighbors
+//             if (graph.containsKey(currentCity)) {
+//                 for (Flight neighbor : graph.get(currentCity)) {
+//                     int newPrice = currentPrice + neighbor.price;
+//                     int newStops = currentStops + 1;
+
+//                     String key = neighbor.destination + "," + newStops;
+//                     if (!visited.containsKey(key) || newPrice < visited.get(key)) {
+//                         visited.put(key, newPrice);
+//                         pq.add(new Flight(neighbor.destination, newPrice, newStops));
+//                     }
+//                 }
+//             }
+//         }
+
+//         return -1; // No valid route
+//     }
+// }

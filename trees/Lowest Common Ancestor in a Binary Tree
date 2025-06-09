@@ -42,3 +42,33 @@ public class BinaryTree {
         System.out.println("LCA of " + p.val + " and " + q.val + " is " + lca.val);
     }
 }
+
+class Solution {
+    public TreeNode lowestCommonAncestor(TreeNode root, TreeNode p, TreeNode q) {
+        List<TreeNode> path1 = new ArrayList<>();
+        List<TreeNode> path2 = new ArrayList<>();
+
+        pathFind(root , p , path1);
+        pathFind(root , q , path2);
+
+        int i = 0 ;
+        while(path1.size() > i && path2.size() > i){
+            if(path1.get(i) != path2.get(i)){
+                break;
+            }
+            i++;
+        }
+
+        return path1.get(i-1);
+    }
+
+    public boolean pathFind(TreeNode root , TreeNode target, List<TreeNode> path){
+        if(root == null) return false;
+        path.add(root);
+        if(root == target) return true;
+
+        if(pathFind(root.left , target, path) || pathFind(root.right , target, path)) return true;
+        path.remove(path.size() - 1);
+        return false;
+    }
+}
