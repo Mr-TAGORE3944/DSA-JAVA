@@ -1,0 +1,7 @@
+to find all paths from source to target:-
+1-> make result list of list, make current list to maintain backtracking.
+2-> we want to do dfs , current.add(element);
+and check node == target, else {
+    visit all node in graph[node] and call dfs to neighbour.
+    after visiting all nodes. remove added current.add(node) for maintaining backtracking. 
+}

@@ -93,28 +93,6 @@ public class GFG {
 
 // This code contributed by Rajput-Ji
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 import java.util.LinkedList;
 import java.util.Queue;
 
@@ -171,8 +149,6 @@ class KnightMove {
                 }
             }
         }
-
-        // If the target is not reachable
         return -1;
     }
 

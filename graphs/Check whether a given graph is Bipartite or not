@@ -143,7 +143,6 @@ public class BipartiteGraph {
         Queue<Integer> queue = new LinkedList<>();
         queue.add(start);
         color[start] = 0; // Start coloring with color 0
-
         while (!queue.isEmpty()) {
             int node = queue.poll();
 

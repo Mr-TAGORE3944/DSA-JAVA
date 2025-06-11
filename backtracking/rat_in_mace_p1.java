@@ -21,3 +21,4 @@ public class rat_in_mace_p1 {
         System.out.println(directions);
     }
 }
+
